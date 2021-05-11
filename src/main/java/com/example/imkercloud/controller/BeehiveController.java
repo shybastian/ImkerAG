@@ -25,6 +25,7 @@ public class BeehiveController {
 
     @GetMapping
     public ResponseEntity<Set<BeehiveDTO>> getAllBeehives() throws BusinessException {
+        System.out.println("Getting Details of All Beehives");
         final Set<BeehiveDTO> beehiveDTOS = new HashSet<>();
         this.beehiveService.findAll().forEach(beehive -> beehiveDTOS.add(this.beehiveMapper.toDto(beehive)));
         return ResponseEntity.ok(beehiveDTOS);
@@ -32,6 +33,7 @@ public class BeehiveController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BeehiveDTO> getBeehiveById(@PathVariable("id") final Long id) throws BusinessException {
+        System.out.println("Getting Details off Beehive with ID: " + id);
         Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
         if (optionalBeehive.isPresent()) {
             return ResponseEntity.ok(this.beehiveMapper.toDto(optionalBeehive.get()));
@@ -43,12 +45,13 @@ public class BeehiveController {
 
     @PostMapping
     public ResponseEntity<BeehiveDTO> saveBeehive(@RequestBody final BeehiveDTO beehiveDTO) throws BusinessException {
+        System.out.println("Adding new Beehive to the Database\n Beehive to be added:\n" + beehiveDTO.toString());
         final Beehive beehive = this.beehiveMapper.toEntity(beehiveDTO);
         final BeehiveDTO addedBeehiveDTO = this.beehiveMapper.toDto(this.beehiveService.save(beehive));
         return ResponseEntity.ok(addedBeehiveDTO);
     }
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<BeehiveDTO> updateBeehive(@RequestBody final BeehiveDTO beehiveDTO) throws BusinessException {
         final Beehive beehive = this.beehiveMapper.toEntity(beehiveDTO);
         final BeehiveDTO updatedBeehiveDTO = this.beehiveMapper.toDto(this.beehiveService.update(beehive));
@@ -57,8 +60,10 @@ public class BeehiveController {
 
     @GetMapping("/{id}/temperature")
     public ResponseEntity<Integer> getBeehiveTemperatureById(@PathVariable("id") final Long id) throws BusinessException {
+        System.out.println("Getting Temperature of Beehive with ID: " + id);
         Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
         if (optionalBeehive.isPresent()) {
+            System.out.println("Temperature of Beehive: " + id + ", is: " + optionalBeehive.get().getTemperature());
             return ResponseEntity.ok(optionalBeehive.get().getTemperature());
         } else {
             BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
@@ -68,8 +73,10 @@ public class BeehiveController {
 
     @GetMapping("/{id}/weight")
     public ResponseEntity<Integer> getBeehiveWeightById(@PathVariable("id") final Long id) throws BusinessException {
+        System.out.println("Getting Weight of Beehive with ID: " + id);
         Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
         if (optionalBeehive.isPresent()) {
+            System.out.println("Weight of Beehive: " + id + ", is: " + optionalBeehive.get().getWeight());
             return ResponseEntity.ok(optionalBeehive.get().getWeight());
         } else {
             BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
@@ -79,8 +86,10 @@ public class BeehiveController {
 
     @GetMapping("/{id}/population")
     public ResponseEntity<Long> getBeehivePopulationById(@PathVariable("id") final Long id) throws BusinessException {
+        System.out.println("Getting Population Number of Beehive with ID: " + id);
         Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
         if (optionalBeehive.isPresent()) {
+            System.out.println("Population Number of Beehive: " + id + ", is: " + optionalBeehive.get().getPopulationNr());
             return ResponseEntity.ok(optionalBeehive.get().getPopulationNr());
         } else {
             BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
@@ -90,8 +99,10 @@ public class BeehiveController {
 
     @GetMapping("/{id}/activity")
     public ResponseEntity<ActivityType> getBeehiveActivityById(@PathVariable("id") final Long id) throws BusinessException {
+        System.out.println("Getting Activity of Beehive with ID: " + id);
         Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
         if (optionalBeehive.isPresent()) {
+            System.out.println("Activity of Beehive: " + id + ", is: " + optionalBeehive.get().getActivityType());
             return ResponseEntity.ok(optionalBeehive.get().getActivityType());
         } else {
             BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
@@ -99,10 +110,11 @@ public class BeehiveController {
         }
     }
 
-    @PutMapping("/{id}/population")
+    @PostMapping("/{id}/population")
     public ResponseEntity<Long> modifyBeehivePopulationById(
             @PathVariable("id") final Long id,
             @RequestParam(value = "add", required = false, defaultValue = "true") final Boolean add) {
+        System.out.println("Called population manipulation API. Add value? " + add);
         return ResponseEntity.ok(this.beehiveService.modifyPopulationNr(id, add));
     }
 }
