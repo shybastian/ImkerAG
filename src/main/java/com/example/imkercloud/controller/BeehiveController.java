@@ -51,7 +51,7 @@ public class BeehiveController {
         return ResponseEntity.ok(addedBeehiveDTO);
     }
 
-    @PostMapping
+    @PutMapping
     public ResponseEntity<BeehiveDTO> updateBeehive(@RequestBody final BeehiveDTO beehiveDTO) throws BusinessException {
         final Beehive beehive = this.beehiveMapper.toEntity(beehiveDTO);
         final BeehiveDTO updatedBeehiveDTO = this.beehiveMapper.toDto(this.beehiveService.update(beehive));
@@ -116,5 +116,13 @@ public class BeehiveController {
             @RequestParam(value = "add", required = false, defaultValue = "true") final Boolean add) {
         System.out.println("Called population manipulation API. Add value? " + add);
         return ResponseEntity.ok(this.beehiveService.modifyPopulationNr(id, add));
+    }
+
+    @PostMapping("/{id}/temperature")
+    public ResponseEntity<Integer> modifyBeehiveTemperatureById(
+            @PathVariable("id") final Long id,
+            @RequestParam(value = "toHeat", required = false, defaultValue = "true") final Boolean toHeat) {
+        System.out.println("Called Temperature Manipulation API. Add value? " + toHeat);
+        return ResponseEntity.ok(this.beehiveService.modifyTemperature(id, toHeat));
     }
 }

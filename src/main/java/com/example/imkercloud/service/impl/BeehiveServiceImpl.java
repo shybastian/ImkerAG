@@ -37,6 +37,18 @@ public class BeehiveServiceImpl implements BeehiveService {
     }
 
     @Override
+    public Integer modifyTemperature(Long id, boolean toAdd) {
+        Beehive entity = this.beehiveRepository.getOne(id);
+        if (toAdd) {
+            entity.setTemperature(entity.getTemperature() + 1);
+        } else {
+            entity.setTemperature(entity.getTemperature() - 1);
+        }
+        this.beehiveRepository.save(entity);
+        return entity.getTemperature();
+    }
+
+    @Override
     public Beehive save(final Beehive beehive) {
         return this.beehiveRepository.save(beehive);
     }
