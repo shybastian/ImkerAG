@@ -17,7 +17,6 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/beehives")
-@CrossOrigin
 @RequiredArgsConstructor
 public class BeehiveController {
     private final BeehiveMapper beehiveMapper;

@@ -1,0 +1,22 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+.notificationViewStyle {
+  margin: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+body {
+  padding-top: 100px;
+  padding-left: 230px;
+  text-align: center;
+}
+
+h2 {
+  color: #394499;
+}
+
+
+div {
+  white-space: pre;
+}

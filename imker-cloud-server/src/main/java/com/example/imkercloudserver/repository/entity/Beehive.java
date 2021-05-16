@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,4 +31,11 @@ public class Beehive {
     @Column(name = "ACTIVITY")
     @Enumerated(value = EnumType.STRING)
     private ActivityType activityType;
+
+    @ManyToMany(
+            mappedBy = "beehives",
+            targetEntity = User.class,
+            fetch = FetchType.LAZY
+    )
+    private List<User> users;
 }

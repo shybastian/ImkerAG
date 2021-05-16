@@ -1,0 +1,49 @@
+/* Navigation link styles */
+@import "~bootstrap/dist/css/bootstrap.min.css";
+/* Fixed sidenav, full height */
+h2 {
+  color: indianred;
+  text-align: center;
+}
+
+.sidenav {
+  height: 100%;
+  width: 230px;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  background-image: linear-gradient(
+    #fff5c3 0%,
+    #ffcc84 100%
+  );
+  overflow-x: hidden;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+/* Style the sidenav links and the dropdown button */
+a {
+  text-align: center;
+  padding: 10px 8px 6px 16px;
+  text-decoration: none;
+  color: indianred;
+  display: block;
+  cursor: pointer;
+  outline: none;
+  border: 1px solid #FFFFFF;
+  border-radius: 8px;
+  font: 700 30px 'Bitter'
+}
+
+.btn {
+  background-color: indianred;
+}
+
+.btn:hover {
+  background-color: coral;
+}
+
+a:hover {
+  background-color: orangered;
+}
+
