@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
         this._auth.setDataInLocalStorage('email', res.email)
         console.log("Auth contains the following:")
         console.log(localStorage)
-        this.router.navigate(['dashboard'])
+        this.router.navigate(['dashboard/beehives'])
       }
     }, err => {
       console.log("Error encountered")

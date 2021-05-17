@@ -1,14 +1,10 @@
 /* Navigation link styles */
-@import "~bootstrap/dist/css/bootstrap.min.css";
+
 /* Fixed sidenav, full height */
-h2 {
-  color: indianred;
-  text-align: center;
-}
 
 .sidenav {
   height: 100%;
-  width: 230px;
+  width: 215px;
   position: fixed;
   z-index: 1;
   left: 0;

@@ -2,6 +2,7 @@ package com.example.imkercloudserver.service.impl;
 
 import com.example.imkercloudserver.repository.BeehiveRepository;
 import com.example.imkercloudserver.repository.entity.Beehive;
+import com.example.imkercloudserver.repository.entity.User;
 import com.example.imkercloudserver.service.BeehiveService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

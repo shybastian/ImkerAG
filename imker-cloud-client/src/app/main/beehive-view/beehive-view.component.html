@@ -1,3 +1,18 @@
 <body>
-<p>beehive-view works!</p>
+<table class="table">
+  <thead>
+  <tr>
+    <th class="table-info" *ngFor="let head of headElements" scope="col">{{head}} </th>
+  </tr>
+  </thead>
+  <tbody class="">
+  <tr  *ngFor="let beehive of beehives">
+    <th scope="row">{{beehive.id}}</th>
+    <td>{{beehive.weight}}</td>
+    <td>{{beehive.temperature}}</td>
+    <td>{{beehive.populationNr}}</td>
+    <td>{{beehive.activityType}}</td>
+  </tr>
+  </tbody>
+</table>
 </body>

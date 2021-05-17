@@ -5,9 +5,11 @@ import com.example.imkercloudserver.repository.entity.Notification;
 import com.example.imkercloudserver.repository.entity.NotificationReadStatusType;
 import com.example.imkercloudserver.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;

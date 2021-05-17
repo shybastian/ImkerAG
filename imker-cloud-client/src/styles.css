@@ -1,4 +1,74 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.min.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  background: linear-gradient(211deg, #f0ffea, #e0fff0, #f8fcdf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Fira Sans", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.background {
+  background: linear-gradient(211deg, #f0ffea, #e0fff0, #f8fcdf);
+  background-size: 100%;
+
+  -webkit-animation: AnimationName 48s ease infinite;
+  -moz-animation: AnimationName 48s ease infinite;
+  -o-animation: AnimationName 48s ease infinite;
+  animation: AnimationName 48s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+  0% {
+    background-position: 94% 0
+  }
+  50% {
+    background-position: 7% 100%
+  }
+  100% {
+    background-position: 94% 0
+  }
+}
+
+@-moz-keyframes AnimationName {
+  0% {
+    background-position: 94% 0
+  }
+  50% {
+    background-position: 7% 100%
+  }
+  100% {
+    background-position: 94% 0
+  }
+}
+
+@-o-keyframes AnimationName {
+  0% {
+    background-position: 94% 0
+  }
+  50% {
+    background-position: 7% 100%
+  }
+  100% {
+    background-position: 94% 0
+  }
+}
+
+@keyframes AnimationName {
+  0% {
+    background-position: 94% 0
+  }
+  50% {
+    background-position: 7% 100%
+  }
+  100% {
+    background-position: 94% 0
+  }
+}
+
+h2 {
+  color: indianred;
+}

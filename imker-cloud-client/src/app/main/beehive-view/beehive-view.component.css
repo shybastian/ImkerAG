@@ -1,11 +1,5 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
-.notificationViewStyle {
-  margin: auto;
-  display: inline-block;
-  vertical-align: middle;
-}
-
 body {
   padding-top: 100px;
   padding-left: 230px;
@@ -13,7 +7,7 @@ body {
 }
 
 h2 {
-  color: #394499;
+  color: indianred;
 }
 
 
