@@ -15,6 +15,8 @@ import java.util.Optional;
 public class BeehiveServiceImpl implements BeehiveService {
     private final BeehiveRepository beehiveRepository;
 
+
+
     @Override
     public List<Beehive> findAll() {
         return this.beehiveRepository.findAll();
@@ -47,6 +49,19 @@ public class BeehiveServiceImpl implements BeehiveService {
         }
         this.beehiveRepository.save(entity);
         return entity.getTemperature();
+    }
+
+    @Override
+    public Integer modifyWeight(final Long id, boolean toAdd){
+        Beehive entity = this.beehiveRepository.getOne(id);
+        if (toAdd) {
+            entity.setWeight(entity.getWeight() + 1);
+        } else {
+            entity.setWeight(entity.getWeight() - 1);
+        }
+        this.beehiveRepository.save(entity);
+        return entity.getWeight();
+
     }
 
     @Override

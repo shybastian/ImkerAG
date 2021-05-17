@@ -15,6 +15,8 @@ public interface BeehiveService {
     Long modifyPopulationNr(final Long id, boolean toAdd);
 
     Integer modifyTemperature(final Long id, boolean toAdd);
+    
+    Integer modifyWeight(final Long id, boolean toAdd);
 
     Beehive save(final Beehive beehive);
 

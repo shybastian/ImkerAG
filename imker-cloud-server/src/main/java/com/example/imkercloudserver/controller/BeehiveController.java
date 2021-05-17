@@ -21,6 +21,7 @@ import java.util.Set;
 public class BeehiveController {
     private final BeehiveMapper beehiveMapper;
     private final BeehiveService beehiveService;
+    private final MailService mailService;
 
     @GetMapping
     public ResponseEntity<Set<BeehiveDTO>> getAllBeehives() throws BusinessException {
@@ -123,5 +124,21 @@ public class BeehiveController {
             @RequestParam(value = "toHeat", required = false, defaultValue = "true") final Boolean toHeat) {
         System.out.println("Called Temperature Manipulation API. Add value? " + toHeat);
         return ResponseEntity.ok(this.beehiveService.modifyTemperature(id, toHeat));
+    }
+
+    @PostMapping("/{id}/weight")
+    public ResponseEntity<Integer> modifyBeehiveWeightById(
+            @PathVariable("id") final Long id,
+            @RequestParam(value = "toHigh", required = false, defaultValue = "true") final Boolean toHigh) {
+        System.out.println("Called Weight Manipulation API. Add value? " + toHigh);
+        return ResponseEntity.ok(this.beehiveService.modifyWeight(id, toHigh));
+    }
+    
+    @PostMapping("/{id}/email")
+    public ResponseEntity<Integer> sendEmail(
+            @PathVariable("id") final Long id){
+        System.out.println("Called Email Manipulation API");
+        mailService.SendMail(this.beehiveService.findById(id).get().getWeight());
+        return ResponseEntity.ok(0);
     }
 }
