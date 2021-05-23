@@ -6,9 +6,11 @@ import com.example.imkercloudserver.mapper.BeehiveMapper;
 import com.example.imkercloudserver.repository.entity.ActivityType;
 import com.example.imkercloudserver.repository.entity.Beehive;
 import com.example.imkercloudserver.service.BeehiveService;
+import com.example.imkercloudserver.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -138,7 +140,9 @@ public class BeehiveController {
     public ResponseEntity<Integer> sendEmail(
             @PathVariable("id") final Long id){
         System.out.println("Called Email Manipulation API");
-        mailService.SendMail(this.beehiveService.findById(id).get().getWeight());
+        Beehive b = this.beehiveService.findById(id).get();
+        mailService.SendMail(b.getWeight(),b.getUsers());
         return ResponseEntity.ok(0);
     }
+   
 }

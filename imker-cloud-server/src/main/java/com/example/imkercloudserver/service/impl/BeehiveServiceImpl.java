@@ -4,17 +4,25 @@ import com.example.imkercloudserver.repository.BeehiveRepository;
 import com.example.imkercloudserver.repository.entity.Beehive;
 import com.example.imkercloudserver.repository.entity.User;
 import com.example.imkercloudserver.service.BeehiveService;
+import com.example.imkercloudserver.service.MailService;
+
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class BeehiveServiceImpl implements BeehiveService {
     private final BeehiveRepository beehiveRepository;
-
+    private final MailService mailService;
+    private List <Long> notifiedBeehives = new ArrayList<>();
 
 
     @Override
@@ -89,5 +97,20 @@ public class BeehiveServiceImpl implements BeehiveService {
             entity.setPopulationNr(model.getPopulationNr());
             entity.setActivityType(model.getActivityType());
         }
+    }
+    @Scheduled(fixedDelay = 10000)
+    @Transactional
+    public void checkWeight() {
+        List <Beehive> list = this.beehiveRepository.findAll();
+        for(Beehive b : list){
+            if(b.getWeight() > 10 && !notifiedBeehives.contains(b.getId())){
+                List<User> users = b.getUsers();
+                mailService.SendMail(b.getWeight(),users);
+                notifiedBeehives.add(b.getId());
+            }
+        
+
+        }
+        
     }
 }

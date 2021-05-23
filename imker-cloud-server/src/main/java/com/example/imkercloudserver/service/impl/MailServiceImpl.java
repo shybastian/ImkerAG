@@ -1,4 +1,5 @@
-package com.example.imkercloud.service.impl;
+package com.example.imkercloudserver.service.impl;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -9,17 +10,24 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import com.example.imkercloud.service.MailService;
+import com.example.imkercloudserver.repository.entity.User;
+import com.example.imkercloudserver.service.MailService;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public class MailServiceImpl implements MailService {
 
-    public void SendMail(Integer weight) {
+    public void SendMail(Integer weight,List <User> users) {
+        for(User user : users){
+            SendMail(weight, user);
 
+        }
+    }
+private void SendMail(Integer weight, User user)
+{
         // Recipient's email ID needs to be mentioned.
-        String to = "flavia.rebrean@gmail.com";
+        String to = user.getEmail();
 
         // Sender's email ID needs to be mentioned
         String from = "beehiveimkerag@gmail.com";
@@ -64,7 +72,7 @@ public class MailServiceImpl implements MailService {
             message.setSubject("Warnung! Gewicht zu hoch!");
 
             // Now set the actual message
-            message.setText("Das Gewicht wurde reduziert. Das Anfangsgewicht war :"+weight);
+            message.setText("Achtung!Gewicht zu hoch!. Das Anfangsgewicht war :"+weight);
 
             System.out.println("sending...");
             // Send message
