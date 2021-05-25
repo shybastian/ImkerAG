@@ -1,5 +1,8 @@
 <body>
-<table class="table">
+<div *ngIf="noBeehives" class="alert-danger">
+  <p class="alert-danger">There are no Beehives available!</p>
+</div>
+<table *ngIf="!noBeehives" class="table">
   <thead>
   <tr>
     <th class="table-info" *ngFor="let head of headElements" scope="col">{{head}} </th>
@@ -7,11 +10,60 @@
   </thead>
   <tbody class="">
   <tr  *ngFor="let beehive of beehives">
-    <th scope="row">{{beehive.id}}</th>
+    <td>
+      <img src="assets/beehive.ico" alt="Beehive icon"/>
+    </td>
+    <td>{{beehive.id}}</td>
     <td>{{beehive.weight}}</td>
-    <td>{{beehive.temperature}}</td>
+
+    <td>
+      <div *ngIf="beehive.temperature < 35" class="table-danger">
+        {{beehive.temperature}}
+      </div>
+      <div *ngIf="beehive.temperature > 35" class="table-danger">
+        {{beehive.temperature}}
+      </div>
+      <div *ngIf="beehive.temperature == 35">
+        {{beehive.temperature}}
+      </div>
+    </td>
+
     <td>{{beehive.populationNr}}</td>
-    <td>{{beehive.activityType}}</td>
+    <td>
+      <div *ngIf="isHyperactive(beehive.activityType) || isSlow(beehive.activityType)" class="table-danger">
+        {{beehive.activityType}}
+      </div>
+      <div *ngIf="isNormal(beehive.activityType)">
+        {{beehive.activityType}}
+      </div>
+    </td>
+
+    <td>
+<!--      <div *ngIf="isNormalTemperature(beehive.temperature) && isNormal(beehive.activityType)">-->
+<!--        <img src="assets/bee-happy.png" alt="Happy Bee"/>-->
+<!--      </div>-->
+
+      <div *ngIf="isNormalTemperature(beehive.temperature) && isNormal(beehive.activityType); then thenBlock else elseBlock">
+      </div>
+      <ng-template #thenBlock>
+        <img src="assets/bee-happy.png" alt="Happy Bee"/>
+      </ng-template>
+      <ng-template #elseBlock>
+        <div *ngIf="isHot(beehive.temperature)">
+          <img src="assets/beehive-cooling.gif" alt="Cooling Beehive"/>
+        </div>
+        <div *ngIf="isCold(beehive.temperature)">
+          <img src="assets/beehive-heating.gif" alt="Cooling Beehive"/>
+        </div>
+        <div *ngIf="isSlow(beehive.activityType) || isHyperactive(beehive.activityType)">
+          <img src="assets/beehive-warning.png" alt="Warning"/>
+        </div>
+      </ng-template>
+    </td>
+
+    <td>
+      <!-- Check weight-->
+    </td>
   </tr>
   </tbody>
 </table>

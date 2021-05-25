@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
-import {Beehives} from "../../main/beehive-view/beehive";
+import {Beehive} from "../../main/beehive-view/beehive";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class BeehiveApiService {
   }
 
   getAllBeehives() {
-    return this.httpClient.get<Beehives>(this.REST_API_SERVER).pipe(map(res => {
+    return this.httpClient.get<Beehive[]>(this.REST_API_SERVER).pipe(map(res => {
       console.log(res);
       return res;
     }));
