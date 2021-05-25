@@ -1,6 +1,7 @@
 package com.example.imkercloudserver.service.impl;
 
 import com.example.imkercloudserver.repository.BeehiveRepository;
+import com.example.imkercloudserver.repository.entity.ActivityType;
 import com.example.imkercloudserver.repository.entity.Beehive;
 import com.example.imkercloudserver.repository.entity.User;
 import com.example.imkercloudserver.service.BeehiveService;
@@ -103,12 +104,32 @@ public class BeehiveServiceImpl implements BeehiveService {
     public void checkWeight() {
         List <Beehive> list = this.beehiveRepository.findAll();
         for(Beehive b : list){
-            if(b.getWeight() > 10 && !notifiedBeehives.contains(b.getId())){
-                List<User> users = b.getUsers();
-                mailService.SendMail(b.getWeight(),users);
+            if(!notifiedBeehives.contains(b.getId()))
+            {
+                if(b.getWeight() > 10){
+                    List<User> users = b.getUsers();
+                    mailService.SendMail("Warnung! Gewicht zu hoch!","Achtung!Gewicht zu hoch!. Das Anfangsgewicht war :"+b.getWeight(),users);
+                    
+                }
+                if(b.getTemperature() > 35 ){
+                    List<User> users = b.getUsers();
+                    mailService.SendMail("Warnung! Temperature zu hoch!","Achtung!Temperature zu hoch!. Das Anfangstemperature war :"+b.getTemperature(),users);
+                    
+                }
+                if(b.getPopulationNr() > 200 ){
+                    List<User> users = b.getUsers();
+                    mailService.SendMail("Warnung! Population zu groß!","Achtung!Population zu groß!. Das Anfangspopulation war :"+b.getPopulationNr(),users);
+                    
+                }
+                if(b.getActivityType() == ActivityType.HYPERACTIVE ){
+                    List<User> users = b.getUsers();
+                    mailService.SendMail("Warnung, die Bienen sind hyperaktiv!","Warnung, die Bienen sind hyperaktiv!",users);
+                    
+                }
                 notifiedBeehives.add(b.getId());
             }
-        
+           
+            
 
         }
         

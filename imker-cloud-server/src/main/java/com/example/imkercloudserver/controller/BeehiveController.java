@@ -141,7 +141,7 @@ public class BeehiveController {
             @PathVariable("id") final Long id){
         System.out.println("Called Email Manipulation API");
         Beehive b = this.beehiveService.findById(id).get();
-        mailService.SendMail(b.getWeight(),b.getUsers());
+        mailService.SendMail("Warnung! Gewicht zu hoch!","Achtung!Gewicht zu hoch!. Das Anfangsgewicht war :"+b.getWeight(),b.getUsers());
         return ResponseEntity.ok(0);
     }
    

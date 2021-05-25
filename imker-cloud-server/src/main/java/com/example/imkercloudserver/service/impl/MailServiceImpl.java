@@ -18,13 +18,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailServiceImpl implements MailService {
 
-    public void SendMail(Integer weight,List <User> users) {
+    public void SendMail(String Subject,String Content,List <User> users) {
         for(User user : users){
-            SendMail(weight, user);
+            SendMail(Subject, Content, user);
 
         }
     }
-private void SendMail(Integer weight, User user)
+private void SendMail(String Subject,String Content, User user)
 {
         // Recipient's email ID needs to be mentioned.
         String to = user.getEmail();
@@ -69,10 +69,12 @@ private void SendMail(Integer weight, User user)
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
             // Set Subject: header field
-            message.setSubject("Warnung! Gewicht zu hoch!");
+            //message.setSubject("Warnung! Gewicht zu hoch!");
+            message.setSubject(Subject);
 
             // Now set the actual message
-            message.setText("Achtung!Gewicht zu hoch!. Das Anfangsgewicht war :"+weight);
+            //message.setText("Achtung!Gewicht zu hoch!. Das Anfangsgewicht war :"+weight);
+            message.setText(Content);
 
             System.out.println("sending...");
             // Send message
