@@ -1,11 +1,13 @@
 package com.example.imkercloudserver.service.impl;
 
+import com.example.imkercloudserver.exception.BusinessException;
 import com.example.imkercloudserver.repository.BeehiveRepository;
 import com.example.imkercloudserver.repository.entity.ActivityType;
 import com.example.imkercloudserver.repository.entity.Beehive;
 import com.example.imkercloudserver.repository.entity.User;
 import com.example.imkercloudserver.service.BeehiveService;
 import com.example.imkercloudserver.service.MailService;
+import com.example.imkercloudserver.service.impl.types.EMailSubjectType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -101,29 +103,30 @@ public class BeehiveServiceImpl implements BeehiveService {
     }
     @Scheduled(fixedDelay = 10000)
     @Transactional
-    public void checkWeight() {
+    @Override
+    public void checkWeight() throws BusinessException {
         List <Beehive> list = this.beehiveRepository.findAll();
         for(Beehive b : list){
             if(!notifiedBeehives.contains(b.getId()))
             {
                 if(b.getWeight() > 10){
                     List<User> users = b.getUsers();
-                    mailService.SendMail("Warnung! Gewicht zu hoch!","Achtung!Gewicht zu hoch!. Das Anfangsgewicht war :"+b.getWeight(),users);
+                    mailService.sendMailToMultipleUsers(EMailSubjectType.WEIGHT_TOO_HIGH,Optional.of(b.getWeight()),users);
                     
                 }
                 if(b.getTemperature() > 35 ){
                     List<User> users = b.getUsers();
-                    mailService.SendMail("Warnung! Temperature zu hoch!","Achtung!Temperature zu hoch!. Das Anfangstemperature war :"+b.getTemperature(),users);
+                    mailService.sendMailToMultipleUsers(EMailSubjectType.TEMPERATURE_TOO_HIGH,Optional.of(b.getTemperature()),users);
                     
                 }
                 if(b.getPopulationNr() > 200 ){
                     List<User> users = b.getUsers();
-                    mailService.SendMail("Warnung! Population zu groß!","Achtung!Population zu groß!. Das Anfangspopulation war :"+b.getPopulationNr(),users);
+                    mailService.sendMailToMultipleUsers(EMailSubjectType.POPULATION_TOO_HIGH,Optional.of(b.getPopulationNr()),users);
                     
                 }
                 if(b.getActivityType() == ActivityType.HYPERACTIVE ){
                     List<User> users = b.getUsers();
-                    mailService.SendMail("Warnung, die Bienen sind hyperaktiv!","Warnung, die Bienen sind hyperaktiv!",users);
+                    mailService.sendMailToMultipleUsers(EMailSubjectType.HYPERACTIVE,Optional.empty(),users);
                     
                 }
                 notifiedBeehives.add(b.getId());
@@ -134,4 +137,13 @@ public class BeehiveServiceImpl implements BeehiveService {
         }
         
     }
+    @Scheduled(fixedDelay = 86400000)
+    //every day 
+     public void resetNotifiedBeehives()  {
+         notifiedBeehives.clear();
+     }
+     @Override
+     public void sendMailToMultipleUsers(EMailSubjectType type, Optional<Number> sufix, List<User> users) throws BusinessException{
+         mailService.sendMailToMultipleUsers(type, sufix, users);
+     }
 }

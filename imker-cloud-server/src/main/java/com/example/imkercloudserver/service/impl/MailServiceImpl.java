@@ -1,7 +1,8 @@
 package com.example.imkercloudserver.service.impl;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
-
+import org.springframework.beans.factory.annotation.Value;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -10,37 +11,43 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.example.imkercloudserver.exception.BusinessException;
 import com.example.imkercloudserver.repository.entity.User;
 import com.example.imkercloudserver.service.MailService;
+import com.example.imkercloudserver.service.impl.types.EMailSubjectType;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public class MailServiceImpl implements MailService {
-
-    public void SendMail(String Subject,String Content,List <User> users) {
+    @Value("${imker.email.address}")
+    private String email;
+    @Value("${imker.email.password}")
+    private String emailPassword;
+    @Value("${imker.email.host}")
+    private String emailHost;
+    @Value("${imker.email.port}")
+    private String emailPort;   
+    @Override 
+    public void sendMailToMultipleUsers(EMailSubjectType type,Optional<Number> sufix, List <User> users) throws BusinessException {
         for(User user : users){
-            SendMail(Subject, Content, user);
+            sendMailToUser( type, sufix, user.getEmail());
 
         }
     }
-private void SendMail(String Subject,String Content, User user)
-{
-        // Recipient's email ID needs to be mentioned.
-        String to = user.getEmail();
-
+    
+    private void sendMailToUser(EMailSubjectType type,Optional<Number> sufix, String userEmail) throws BusinessException{
+       
         // Sender's email ID needs to be mentioned
-        String from = "beehiveimkerag@gmail.com";
+        String from = email;
 
-        // Assuming you are sending email from through gmails smtp
-        String host = "smtp.gmail.com";
-
+        
         // Get system properties
         Properties properties = System.getProperties();
 
         // Setup mail server
-        properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.host", emailHost);
+        properties.put("mail.smtp.port", emailPort);
         properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.auth", "true");
 
@@ -49,7 +56,7 @@ private void SendMail(String Subject,String Content, User user)
 
             protected PasswordAuthentication getPasswordAuthentication() {
 
-                return new PasswordAuthentication("beehiveimkerag@gmail.com", "Init123!");
+                return new PasswordAuthentication(email, emailPassword);
 
             }
 
@@ -66,22 +73,27 @@ private void SendMail(String Subject,String Content, User user)
             message.setFrom(new InternetAddress(from));
 
             // Set To: header field of the header.
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(userEmail));
 
             // Set Subject: header field
             //message.setSubject("Warnung! Gewicht zu hoch!");
-            message.setSubject(Subject);
-
+            message.setSubject(type.subject);
+            
             // Now set the actual message
-            //message.setText("Achtung!Gewicht zu hoch!. Das Anfangsgewicht war :"+weight);
-            message.setText(Content);
+            if(sufix.isPresent()){
+                message.setText(type.message+sufix.get());
 
+            }else{
+                message.setText(type.message);
+            }
+            
             System.out.println("sending...");
             // Send message
             Transport.send(message);
             System.out.println("Sent message successfully....");
         } catch (MessagingException mex) {
             mex.printStackTrace();
+            throw new BusinessException("Could not sent email to user"+userEmail);
         }
 
     }

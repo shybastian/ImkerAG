@@ -7,10 +7,11 @@ import com.example.imkercloudserver.repository.entity.ActivityType;
 import com.example.imkercloudserver.repository.entity.Beehive;
 import com.example.imkercloudserver.service.BeehiveService;
 import com.example.imkercloudserver.service.MailService;
+import com.example.imkercloudserver.service.impl.types.EMailSubjectType;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -23,7 +24,7 @@ import java.util.Set;
 public class BeehiveController {
     private final BeehiveMapper beehiveMapper;
     private final BeehiveService beehiveService;
-    private final MailService mailService;
+    
 
     @GetMapping
     public ResponseEntity<Set<BeehiveDTO>> getAllBeehives() throws BusinessException {
@@ -138,11 +139,18 @@ public class BeehiveController {
     
     @PostMapping("/{id}/email")
     public ResponseEntity<Integer> sendEmail(
-            @PathVariable("id") final Long id){
+            @PathVariable("id") final Long id) throws BusinessException{
         System.out.println("Called Email Manipulation API");
-        Beehive b = this.beehiveService.findById(id).get();
-        mailService.SendMail("Warnung! Gewicht zu hoch!","Achtung!Gewicht zu hoch!. Das Anfangsgewicht war :"+b.getWeight(),b.getUsers());
-        return ResponseEntity.ok(0);
+        Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
+        if(optionalBeehive.isPresent()){
+            Beehive b=optionalBeehive.get();
+            beehiveService.sendMailToMultipleUsers(EMailSubjectType.WEIGHT_TOO_HIGH,Optional.of(b.getWeight()),b.getUsers());
+        } else {
+            throw new BusinessException("Beehive id "+id+ "was not found");
+
+        }
+        
+        return ResponseEntity.noContent().build();
     }
-   
+    
 }
