@@ -15,6 +15,7 @@ import { BeehiveViewComponent } from './main/beehive-view/beehive-view.component
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {ExtendedModule, FlexModule} from "@angular/flex-layout";
+import { BeehiveSetupComponent } from './main/tool-view/beehive-setup/beehive-setup.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {ExtendedModule, FlexModule} from "@angular/flex-layout";
     NavigateMenuComponent,
     NotificationViewComponent,
     BeehiveViewComponent,
+    BeehiveSetupComponent,
   ],
   imports: [
     BrowserModule,

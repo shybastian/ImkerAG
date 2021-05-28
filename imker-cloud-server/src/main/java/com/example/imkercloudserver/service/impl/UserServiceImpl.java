@@ -65,6 +65,12 @@ public class UserServiceImpl implements UserService {
         this.userRepository.deleteById(id);
     }
 
+    @Override
+    public void hashPassword(final String password) {
+        final String hashedPassword = this.hashString(password);
+        System.out.println(hashedPassword);
+    }
+
     private void mapModelToEntity(final User model, final User entity) {
         if (model != null && entity != null) {
             entity.setFirstName(model.getFirstName());

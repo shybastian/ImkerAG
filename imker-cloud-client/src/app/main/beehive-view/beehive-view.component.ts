@@ -33,11 +33,14 @@ export class BeehiveViewComponent implements OnInit, AfterViewInit {
    * Get all Beehive data from the server.
    */
   ngAfterViewInit(): void {
-    this._beehiveApi.getAllBeehives().subscribe((data: Beehive[]) => {
-      if (data.length === 0){
+    this._beehiveApi.getBeehivesBelongingToUser().subscribe((data: Beehive[]) => {
+      if (data.length === 0) {
         this.noBeehives = true;
       } else {
         this.beehives = data;
+        this.beehives.sort((a, b) => {
+          return a.id - b.id;
+        })
       }
     })
   }

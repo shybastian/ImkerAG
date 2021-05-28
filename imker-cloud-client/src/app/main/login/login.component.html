@@ -24,6 +24,10 @@
     </div>
   </form>
 
+  <div *ngIf="loginError" class="alert-danger">
+    {{loginErrorMessage}}
+  </div>
+
   <p></p>
 
   <div class="wrapper">

@@ -22,13 +22,13 @@ a {
   text-align: center;
   padding: 10px 8px 6px 16px;
   text-decoration: none;
-  color: indianred;
+  /*color: indianred;*/
+  background-color: palevioletred;
   display: block;
   cursor: pointer;
   outline: none;
   border: 1px solid #FFFFFF;
   border-radius: 8px;
-  font: 700 30px 'Bitter'
 }
 
 .btn {

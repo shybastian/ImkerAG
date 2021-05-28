@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,5 +37,5 @@ public class Beehive {
             targetEntity = User.class,
             fetch = FetchType.LAZY
     )
-    private List<User> users;
+    private Set<User> users;
 }

@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {NotificationApiService} from "../../services/notificationApi/notification-api.service";
+import {Notification, NotificationType} from "./notification";
 
 
 @Component({
@@ -7,25 +8,49 @@ import {Router} from '@angular/router';
   templateUrl: './notification-view.component.html',
   styleUrls: ['./notification-view.component.scss'],
 })
-export class NotificationViewComponent implements OnInit {
+export class NotificationViewComponent implements OnInit, AfterViewInit {
+  headElements = ['Type', 'Message', 'Time Stamp'];
 
-  notifications: Notification[] = [];
+  public notifications: Notification[];
+  public noNotifications: boolean;
 
-  constructor(private router: Router) {}
+  constructor(private _notificationApi: NotificationApiService) {
+    this.notifications = [];
+    this.noNotifications = false;
+  }
 
-  /**
-   * When this component is initialized,
-   * this function is called.
-   * It initializes the values of the notifications in the table
-   */
   ngOnInit() {
-    // debugger;
-    // this.userService.getUserNotifications(this.storageService.getUserWithoutIdRolesCounterStatusFromSessionStorage().username)
-    //   .subscribe(notifications => {
-    //     this.notifications = notifications;
-    //   }, Error => {
-    //     alert(this.translate.instant("NOTIFICATIONS_VIEW.ERROR"));
-    //   });
+  }
+
+  ngAfterViewInit(): void {
+    this._notificationApi.getAllUnreadNotifications().subscribe((data: Notification[]) => {
+      if (data.length === 0) {
+        this.noNotifications = true;
+      } else {
+        this.notifications = data;
+        this.notifications.sort((a, b) => {
+          return a.id - b.id;
+        })
+      }
+    })
+  }
+
+  isCritical(type: NotificationType) {
+    var castString: string = NotificationType[NotificationType.CRITICAL];
+    // @ts-ignore
+    return type === castString;
+  }
+
+  isWarning(type: NotificationType) {
+    var castString: string = NotificationType[NotificationType.WARNING];
+    // @ts-ignore
+    return type === castString;
+  }
+
+  isInfo(type: NotificationType) {
+    var castString: string = NotificationType[NotificationType.INFO];
+    // @ts-ignore
+    return type === castString;
   }
 
 }

@@ -1,28 +1,34 @@
 <body>
-<form class="notificationViewStyle">
-<!--  <p-dataView [value]="notifications" [paginator]="true" [rows]="3" paginatorPosition="both" filterBy="brand">-->
-<!--    <ng-template let-notification pTemplate="listItem">-->
-<!--      <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">-->
-<!--        <div class="ui-g-12 ui-md-8 car-details">-->
-<!--          <div class="ui-g">-->
+<div *ngIf="noNotifications" class="alert-light">
+  <p class="alert-light">You have no unread notifications! :)</p>
+</div>
+<table *ngIf="!noNotifications" class="table">
+  <thead>
+  <tr>
+    <th class="table-info" *ngFor="let head of headElements" scope="col">{{head}} </th>
+  </tr>
+  </thead>
+  <tbody class="">
+  <tr *ngFor="let notification of notifications">
+    <td>
+      <img src="assets/beehive.ico" alt="Beehive icon"/>
+    </td>
+    <td>
+      <div *ngIf="isCritical(notification.notificationType)" class="table-danger">
+        {{notification.notificationType}}
+      </div>
+      <div *ngIf="isWarning(notification.notificationType)" class="table-warning">
+        {{notification.notificationType}}
+      </div>
+      <div *ngIf="isInfo(notification.notificationType)" class="table-info">
+        {{notification.notificationType}}
+      </div>
+    </td>
 
-<!--            <ul>-->
-<!--              <div class="ui-g-2 ui-sm-6">Message:</div>-->
-<!--              <div class="ui-g-10 ui-sm-6"><b>{{notification.message}}</b></div>-->
-<!--            </ul>-->
-<!--            <ul>-->
-<!--              <div class="ui-g-2 ui-sm-6">Date:</div>-->
-<!--              <div class="ui-g-10 ui-sm-6"><b>{{notification.date}}</b></div>-->
-<!--            </ul>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </ng-template>-->
-<!--    <ng-template let-car pTemplate="gridItem">-->
-<!--      <div style="padding:.5em" class="ui-g-12 ui-md-3">-->
-<!--      </div>-->
-<!--    </ng-template>-->
-<!--  </p-dataView>-->
-  <p>Blegh</p>
-</form>
+    <td>{{notification.message}}</td>
+
+    <td>{{notification.timestamp | date}}</td>
+  </tr>
+  </tbody>
+</table>
 </body>

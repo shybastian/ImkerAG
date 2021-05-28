@@ -11,11 +11,15 @@ import {UserApiService} from "../../services/userApi/user-api.service";
 })
 export class LoginComponent implements OnInit {
   form!: FormGroup;
+  loginError: boolean;
+  loginErrorMessage: string;
 
   constructor(private _userApi: UserApiService,
               private _auth: AuthService,
               private router: Router,
               public formBuilder: FormBuilder) {
+    this.loginError = false;
+    this.loginErrorMessage = "";
   }
 
   ngOnInit(): void {
@@ -27,25 +31,30 @@ export class LoginComponent implements OnInit {
 
   login() {
     let b = this.form.value
-    console.log(b)
     this._userApi.loginUser(b).subscribe((res: any) => {
-      console.log("Response of Login:")
-      console.log(res)
-      if (res !== undefined && res !== null) {
-        console.log("We're saving the data")
-        this._auth.setDataInLocalStorage('id', res.id)
-        this._auth.setDataInLocalStorage('username', res.username)
-        this._auth.setDataInLocalStorage('firstName', res.firstName)
-        this._auth.setDataInLocalStorage('lastName', res.lastName)
-        this._auth.setDataInLocalStorage('email', res.email)
-        console.log("Auth contains the following:")
-        console.log(localStorage)
-        this.router.navigate(['dashboard/beehives'])
-      }
-    }, err => {
-      console.log("Error encountered")
-      console.log(err)
-    });
+        if (res !== undefined && res !== null) {
+          this.loginError = false;
+          this.loginErrorMessage = "";
+
+          this._auth.setDataInLocalStorage('id', res.id)
+          this._auth.setDataInLocalStorage('username', res.username)
+          this._auth.setDataInLocalStorage('firstName', res.firstName)
+          this._auth.setDataInLocalStorage('lastName', res.lastName)
+          this._auth.setDataInLocalStorage('email', res.email)
+        }
+      },
+      error => {
+        this.loginError = true;
+        console.log(error);
+        if (error.status === 404) {
+          this.loginErrorMessage = "Username/Password combination not found!"
+        } else {
+          this.loginErrorMessage = error.message;
+        }
+      },
+      () => {
+        this.router.navigate(['dashboard/beehives']);
+      });
   }
 
 }

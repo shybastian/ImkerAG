@@ -6,9 +6,7 @@ import com.example.imkercloudserver.mapper.BeehiveMapper;
 import com.example.imkercloudserver.repository.entity.ActivityType;
 import com.example.imkercloudserver.repository.entity.Beehive;
 import com.example.imkercloudserver.service.BeehiveService;
-import com.example.imkercloudserver.service.MailService;
 import com.example.imkercloudserver.service.impl.types.EMailSubjectType;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,24 +22,30 @@ import java.util.Set;
 public class BeehiveController {
     private final BeehiveMapper beehiveMapper;
     private final BeehiveService beehiveService;
-    
+
 
     @GetMapping
-    public ResponseEntity<Set<BeehiveDTO>> getAllBeehives() throws BusinessException {
-        System.out.println("Getting Details of All Beehives");
+    public ResponseEntity<Set<BeehiveDTO>> getAllBeehives(
+            @RequestParam(value = "userId", required = false) final Long userId) throws BusinessException {
         final Set<BeehiveDTO> beehiveDTOS = new HashSet<>();
-        this.beehiveService.findAll().forEach(beehive -> beehiveDTOS.add(this.beehiveMapper.toDto(beehive)));
+        if (userId != null) {
+            this.beehiveService.findAllBelongingToUserId(userId)
+                    .forEach(beehive -> beehiveDTOS.add(this.beehiveMapper.toDto(beehive)));
+        } else {
+            this.beehiveService.findAll()
+                    .forEach(beehive -> beehiveDTOS.add(this.beehiveMapper.toDto(beehive)));
+        }
         return ResponseEntity.ok(beehiveDTOS);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BeehiveDTO> getBeehiveById(@PathVariable("id") final Long id) throws BusinessException {
-        System.out.println("Getting Details off Beehive with ID: " + id);
-        Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
+    public ResponseEntity<BeehiveDTO> getBeehiveById(
+            @PathVariable("id") final Long id) throws BusinessException {
+        final Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
         if (optionalBeehive.isPresent()) {
             return ResponseEntity.ok(this.beehiveMapper.toDto(optionalBeehive.get()));
         } else {
-            BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
+            final BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
             return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
         }
     }
@@ -64,12 +68,12 @@ public class BeehiveController {
     @GetMapping("/{id}/temperature")
     public ResponseEntity<Integer> getBeehiveTemperatureById(@PathVariable("id") final Long id) throws BusinessException {
         System.out.println("Getting Temperature of Beehive with ID: " + id);
-        Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
+        final Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
         if (optionalBeehive.isPresent()) {
             System.out.println("Temperature of Beehive: " + id + ", is: " + optionalBeehive.get().getTemperature());
             return ResponseEntity.ok(optionalBeehive.get().getTemperature());
         } else {
-            BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
+            final BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
             return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
         }
     }
@@ -77,12 +81,12 @@ public class BeehiveController {
     @GetMapping("/{id}/weight")
     public ResponseEntity<Integer> getBeehiveWeightById(@PathVariable("id") final Long id) throws BusinessException {
         System.out.println("Getting Weight of Beehive with ID: " + id);
-        Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
+        final Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
         if (optionalBeehive.isPresent()) {
             System.out.println("Weight of Beehive: " + id + ", is: " + optionalBeehive.get().getWeight());
             return ResponseEntity.ok(optionalBeehive.get().getWeight());
         } else {
-            BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
+            final BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
             return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
         }
     }
@@ -90,12 +94,12 @@ public class BeehiveController {
     @GetMapping("/{id}/population")
     public ResponseEntity<Long> getBeehivePopulationById(@PathVariable("id") final Long id) throws BusinessException {
         System.out.println("Getting Population Number of Beehive with ID: " + id);
-        Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
+        final Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
         if (optionalBeehive.isPresent()) {
             System.out.println("Population Number of Beehive: " + id + ", is: " + optionalBeehive.get().getPopulationNr());
             return ResponseEntity.ok(optionalBeehive.get().getPopulationNr());
         } else {
-            BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
+            final BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
             return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
         }
     }
@@ -103,12 +107,12 @@ public class BeehiveController {
     @GetMapping("/{id}/activity")
     public ResponseEntity<ActivityType> getBeehiveActivityById(@PathVariable("id") final Long id) throws BusinessException {
         System.out.println("Getting Activity of Beehive with ID: " + id);
-        Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
+        final Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
         if (optionalBeehive.isPresent()) {
             System.out.println("Activity of Beehive: " + id + ", is: " + optionalBeehive.get().getActivityType());
             return ResponseEntity.ok(optionalBeehive.get().getActivityType());
         } else {
-            BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
+            final BusinessException exception = new BusinessException("Beehive with ID: " + id + " does not exist!");
             return new ResponseEntity(exception, HttpStatus.BAD_REQUEST);
         }
     }
@@ -136,21 +140,21 @@ public class BeehiveController {
         System.out.println("Called Weight Manipulation API. Add value? " + toHigh);
         return ResponseEntity.ok(this.beehiveService.modifyWeight(id, toHigh));
     }
-    
+
     @PostMapping("/{id}/email")
     public ResponseEntity<Integer> sendEmail(
-            @PathVariable("id") final Long id) throws BusinessException{
+            @PathVariable("id") final Long id) throws BusinessException {
         System.out.println("Called Email Manipulation API");
-        Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
-        if(optionalBeehive.isPresent()){
-            Beehive b=optionalBeehive.get();
-            beehiveService.sendMailToMultipleUsers(EMailSubjectType.WEIGHT_TOO_HIGH,Optional.of(b.getWeight()),b.getUsers());
+        final Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
+        if (optionalBeehive.isPresent()) {
+            final Beehive b = optionalBeehive.get();
+            this.beehiveService.sendMailToMultipleUsers(EMailSubjectType.WEIGHT_TOO_HIGH, Optional.of(b.getWeight()), b.getUsers());
         } else {
-            throw new BusinessException("Beehive id "+id+ "was not found");
+            throw new BusinessException("Beehive id " + id + "was not found");
 
         }
-        
+
         return ResponseEntity.noContent().build();
     }
-    
+
 }

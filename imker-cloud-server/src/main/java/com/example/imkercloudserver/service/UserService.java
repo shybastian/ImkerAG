@@ -22,4 +22,6 @@ public interface UserService {
     User update(final User user);
 
     void deleteById(final Long id);
+
+    void hashPassword(final String password);
 }

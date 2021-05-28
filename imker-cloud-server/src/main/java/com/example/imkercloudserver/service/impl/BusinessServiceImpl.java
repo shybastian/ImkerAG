@@ -1,47 +1,71 @@
 package com.example.imkercloudserver.service.impl;
 
-import java.util.Collections;
-import java.util.Random;
-
 import com.example.imkercloudserver.repository.BeehiveRepository;
 import com.example.imkercloudserver.repository.UserRepository;
 import com.example.imkercloudserver.repository.entity.ActivityType;
 import com.example.imkercloudserver.repository.entity.Beehive;
 import com.example.imkercloudserver.repository.entity.User;
 import com.example.imkercloudserver.service.BusinessService;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class BusinessServiceImpl implements BusinessService{
+public class BusinessServiceImpl implements BusinessService {
     private final BeehiveRepository beehiveRepository;
     private final UserRepository userRepository;
-    public void createRandomBeehives(User user,Long nrBeehives){
-        for(int i = 0; i < nrBeehives; i++)
-        {
-            Beehive b = new Beehive();
-            b.setPopulationNr(GenerateRandomNumberLong(50,300));
-            b.setTemperature(GenerateRandomNumberInt(10,60));
-            b.setWeight(GenerateRandomNumberInt(5,25));
-            b.setActivityType(ActivityType.values()[GenerateRandomNumberInt(0,ActivityType.values().length)]);
-           // b.setUsers(Collections.singletonList(user));
-            b = beehiveRepository.save(b);
-            user.getBeehives().add(b);
-            
+
+    public Set<Beehive> createRandomBeehives(Long nrBeehives) {
+        this.cleanUpBeehivesReferences();
+
+        final Set<Beehive> beehives = new HashSet<>();
+        if (nrBeehives < 10) nrBeehives = 10L;
+        for (int i = 0; i < nrBeehives; i++) {
+            beehives.add(this.beehiveRepository.save(this.createBeehive()));
         }
-        userRepository.save(user);
-       
-        
+        return beehives;
     }
-    private Long GenerateRandomNumberLong(int low, int high){
-    Random r = new Random();
-    return Long.valueOf(r.nextInt(high-low) + low);
+
+    @Override
+    public void assignBeehivesToUsers(final Set<Beehive> beehiveSet) {
+        final List<User> users = this.userRepository.findAll();
+        final int size = users.size();
+        for (final Beehive beehive : beehiveSet) {
+            users.get(this.generateRandomNumber(size)).getBeehives().add(beehive);
+        }
+        this.userRepository.saveAll(users);
     }
-    private Integer GenerateRandomNumberInt(int low, int high){
-        Random r = new Random();
-        return r.nextInt(high-low) + low;
+
+    private Beehive createBeehive() {
+        final Beehive beehive = new Beehive();
+        beehive.setPopulationNr(Long.valueOf(this.generateRandomNumber(50, 300)));
+        beehive.setTemperature(this.generateRandomNumber(10, 60));
+        beehive.setWeight(this.generateRandomNumber(5, 25));
+        beehive.setActivityType(ActivityType.values()[this.generateRandomNumber(0, ActivityType.values().length)]);
+        return beehive;
+    }
+
+    private Integer generateRandomNumber(final int low, final int high) {
+        final Random r = new Random();
+        return r.nextInt(high - low) + low;
+    }
+
+    private Integer generateRandomNumber(final int bound) {
+        final Random random = new Random();
+        return random.nextInt(bound);
+    }
+
+    private void cleanUpBeehivesReferences() {
+        final List<User> users = this.userRepository.findAll();
+        for (final User user : users) {
+            user.getBeehives().clear();
+        }
+        this.userRepository.saveAll(users);
+        this.beehiveRepository.deleteAll(this.beehiveRepository.findAll());
     }
 }

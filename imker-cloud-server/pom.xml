@@ -18,6 +18,9 @@
         <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.10</org.projectlombok.version>
         <org.springboot.addons.version>2.4.5</org.springboot.addons.version>
+        <liquibase.propertyFile>${project.basedir}/db/liquibase.properties</liquibase.propertyFile>
+        <liquibase.database.url>jdbc:sqlserver://localhost:1433;databaseName=MediCare;integratedSecurity=true</liquibase.database.url>
+        <camunda.dmn.version>7.15.0</camunda.dmn.version>
     </properties>
 
     <dependencies>
@@ -49,6 +52,24 @@
             <version>${org.springboot.addons.version}</version>
         </dependency>
 
+        <!-- DMN -->
+        <dependency>
+            <groupId>org.camunda.bpm.dmn</groupId>
+            <artifactId>camunda-engine-dmn</artifactId>
+            <version>${camunda.dmn.version}</version>
+        </dependency>
+
+        <!-- Liquibase -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
         <!-- Extras -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -70,17 +91,17 @@
             <artifactId>javax.mail</artifactId>
             <version>1.6.2</version>
         </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.4</version>
+        </dependency>
 
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-         <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>1.6.2</version>
         </dependency>
     </dependencies>
 
@@ -125,6 +146,40 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <!-- Build Plugin Management -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.liquibase</groupId>
+                    <artifactId>liquibase-maven-plugin</artifactId>
+                    <version>3.8.0</version>
+                    <configuration>
+                        <propertyFile>${liquibase.propertyFile}</propertyFile>
+                        <changeLogFile>src/main/resources/db.changelog/db.changelog-master.xml</changeLogFile>
+                        <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+                        <url>${liquibase.database.url}</url>
+                    </configuration>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.microsoft.sqlserver</groupId>
+                            <artifactId>mssql-jdbc</artifactId>
+                            <version>9.2.1.jre8</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.hibernate</groupId>
+                            <artifactId>hibernate-core</artifactId>
+                            <version>5.4.12.Final</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>javax.xml.bind</groupId>
+                            <artifactId>jaxb-api</artifactId>
+                            <version>2.3.1</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>

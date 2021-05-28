@@ -2,35 +2,33 @@ package com.example.imkercloudserver.service.impl;
 
 import com.example.imkercloudserver.exception.BusinessException;
 import com.example.imkercloudserver.repository.BeehiveRepository;
-import com.example.imkercloudserver.repository.entity.ActivityType;
+import com.example.imkercloudserver.repository.UserRepository;
 import com.example.imkercloudserver.repository.entity.Beehive;
 import com.example.imkercloudserver.repository.entity.User;
 import com.example.imkercloudserver.service.BeehiveService;
 import com.example.imkercloudserver.service.MailService;
 import com.example.imkercloudserver.service.impl.types.EMailSubjectType;
-
+import com.google.common.collect.Sets;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import javax.transaction.Transactional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class BeehiveServiceImpl implements BeehiveService {
     private final BeehiveRepository beehiveRepository;
+    private final UserRepository userRepository;
     private final MailService mailService;
-    private List <Long> notifiedBeehives = new ArrayList<>();
+    private final List<Long> notifiedBeehives;
 
 
     @Override
-    public List<Beehive> findAll() {
-        return this.beehiveRepository.findAll();
+    public Set<Beehive> findAll() {
+        return Sets.newHashSet(this.beehiveRepository.findAll());
     }
 
     @Override
@@ -39,8 +37,18 @@ public class BeehiveServiceImpl implements BeehiveService {
     }
 
     @Override
-    public Long modifyPopulationNr(Long id, boolean toAdd) {
-        Beehive entity = this.beehiveRepository.getOne(id);
+    public Set<Beehive> findAllBelongingToUserId(final Long userId) throws BusinessException {
+        final Optional<User> optional = this.userRepository.findById(userId);
+        if (optional.isPresent()) {
+            return optional.get().getBeehives();
+        } else {
+            throw new BusinessException("There was no user with id: " + userId + "found!");
+        }
+    }
+
+    @Override
+    public Long modifyPopulationNr(final Long id, final boolean toAdd) {
+        final Beehive entity = this.beehiveRepository.getOne(id);
         if (toAdd) {
             entity.setPopulationNr(entity.getPopulationNr() + 1);
         } else {
@@ -51,8 +59,8 @@ public class BeehiveServiceImpl implements BeehiveService {
     }
 
     @Override
-    public Integer modifyTemperature(Long id, boolean toAdd) {
-        Beehive entity = this.beehiveRepository.getOne(id);
+    public Integer modifyTemperature(final Long id, final boolean toAdd) {
+        final Beehive entity = this.beehiveRepository.getOne(id);
         if (toAdd) {
             entity.setTemperature(entity.getTemperature() + 1);
         } else {
@@ -63,8 +71,8 @@ public class BeehiveServiceImpl implements BeehiveService {
     }
 
     @Override
-    public Integer modifyWeight(final Long id, boolean toAdd){
-        Beehive entity = this.beehiveRepository.getOne(id);
+    public Integer modifyWeight(final Long id, final boolean toAdd) {
+        final Beehive entity = this.beehiveRepository.getOne(id);
         if (toAdd) {
             entity.setWeight(entity.getWeight() + 1);
         } else {
@@ -82,8 +90,8 @@ public class BeehiveServiceImpl implements BeehiveService {
 
     @Override
     public Beehive update(final Beehive beehive) {
-        Beehive entity = this.beehiveRepository.getOne(beehive.getId());
-        mapModelToEntity(beehive, entity);
+        final Beehive entity = this.beehiveRepository.getOne(beehive.getId());
+        this.mapModelToEntity(beehive, entity);
         this.beehiveRepository.save(entity);
         return entity;
     }
@@ -93,7 +101,7 @@ public class BeehiveServiceImpl implements BeehiveService {
         this.beehiveRepository.deleteById(id);
     }
 
-    private void mapModelToEntity(Beehive model, Beehive entity) {
+    private void mapModelToEntity(final Beehive model, final Beehive entity) {
         if (model != null && entity != null) {
             entity.setTemperature(model.getTemperature());
             entity.setWeight(model.getWeight());
@@ -101,49 +109,47 @@ public class BeehiveServiceImpl implements BeehiveService {
             entity.setActivityType(model.getActivityType());
         }
     }
-    @Scheduled(fixedDelay = 10000)
-    @Transactional
-    @Override
-    public void checkWeight() throws BusinessException {
-        List <Beehive> list = this.beehiveRepository.findAll();
-        for(Beehive b : list){
-            if(!notifiedBeehives.contains(b.getId()))
-            {
-                if(b.getWeight() > 10){
-                    List<User> users = b.getUsers();
-                    mailService.sendMailToMultipleUsers(EMailSubjectType.WEIGHT_TOO_HIGH,Optional.of(b.getWeight()),users);
-                    
-                }
-                if(b.getTemperature() > 35 ){
-                    List<User> users = b.getUsers();
-                    mailService.sendMailToMultipleUsers(EMailSubjectType.TEMPERATURE_TOO_HIGH,Optional.of(b.getTemperature()),users);
-                    
-                }
-                if(b.getPopulationNr() > 200 ){
-                    List<User> users = b.getUsers();
-                    mailService.sendMailToMultipleUsers(EMailSubjectType.POPULATION_TOO_HIGH,Optional.of(b.getPopulationNr()),users);
-                    
-                }
-                if(b.getActivityType() == ActivityType.HYPERACTIVE ){
-                    List<User> users = b.getUsers();
-                    mailService.sendMailToMultipleUsers(EMailSubjectType.HYPERACTIVE,Optional.empty(),users);
-                    
-                }
-                notifiedBeehives.add(b.getId());
-            }
-           
-            
 
-        }
-        
-    }
+//    @Scheduled(fixedDelay = 86400000 / 2)
+//    @Transactional
+//    @Override
+//    public void checkWeight() throws BusinessException {
+//        final List<Beehive> list = this.beehiveRepository.findAll();
+//        for (final Beehive b : list) {
+//            if (!this.notifiedBeehives.contains(b.getId())) {
+//                if (b.getWeight() > 10) {
+//                    final Set<User> users = b.getUsers();
+//                    this.mailService.sendMailToMultipleUsers(EMailSubjectType.WEIGHT_TOO_HIGH, Optional.of(b.getWeight()), users);
+//
+//                }
+//                if (b.getTemperature() > 35) {
+//                    final Set<User> users = b.getUsers();
+//                    this.mailService.sendMailToMultipleUsers(EMailSubjectType.TEMPERATURE_TOO_HIGH, Optional.of(b.getTemperature()), users);
+//
+//                }
+//                if (b.getPopulationNr() > 200) {
+//                    final Set<User> users = b.getUsers();
+//                    this.mailService.sendMailToMultipleUsers(EMailSubjectType.POPULATION_TOO_HIGH, Optional.of(b.getPopulationNr()), users);
+//
+//                }
+//                if (b.getActivityType() == ActivityType.HYPERACTIVE) {
+//                    final Set<User> users = b.getUsers();
+//                    this.mailService.sendMailToMultipleUsers(EMailSubjectType.HYPERACTIVE, Optional.empty(), users);
+//
+//                }
+//                this.notifiedBeehives.add(b.getId());
+//            }
+//        }
+//    }
+
     @Scheduled(fixedDelay = 86400000)
     //every day 
-     public void resetNotifiedBeehives()  {
-         notifiedBeehives.clear();
-     }
-     @Override
-     public void sendMailToMultipleUsers(EMailSubjectType type, Optional<Number> sufix, List<User> users) throws BusinessException{
-         mailService.sendMailToMultipleUsers(type, sufix, users);
-     }
+    public void resetNotifiedBeehives() {
+        this.notifiedBeehives.clear();
+    }
+
+    @Override
+    public void sendMailToMultipleUsers(final EMailSubjectType type, final Optional<Number> sufix, final Set<User> users) throws BusinessException {
+        this.mailService.sendMailToMultipleUsers(type, sufix, users);
+    }
 }

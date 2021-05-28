@@ -1,6 +1,10 @@
 <div class="sidenav">
   <h2>Imker Cloud</h2>
 
+  <div>
+    Hello, {{_auth.getFirstName()}}
+  </div>
+
   <button (click)="atBeehivesButtonPress()" class="btn btn-primary btn-outline-light btn-block">
     Beehives
   </button>
@@ -9,8 +13,20 @@
     Notifications
   </button>
 
+  <button class="btn btn-primary btn-outline-light btn-block dropdown-toggle "
+          (click)="clickToolsButton() ">
+    Tools
+  </button>
+  <div *ngIf="isToolsButtonActive==true ">
+    <div>
+      <a (click)="initialSetupBeehives()">Set up Beehives</a>
+    </div>
+  </div>
+
   <button class="btn btn-primary btn-outline-light btn-block"
-          (click)="atLogout()">Log Out</button>
+          (click)="atLogout()">Log Out
+  </button>
   <br>
+
 </div>
 

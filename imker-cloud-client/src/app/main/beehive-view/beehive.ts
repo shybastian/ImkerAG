@@ -1,5 +1,5 @@
 export interface Beehive {
-  id: string;
+  id: number;
   weight: number;
   temperature: number;
   populationNr: number;

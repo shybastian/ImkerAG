@@ -22,18 +22,19 @@ public class NotificationController {
 
     @GetMapping
     public ResponseEntity<List<NotificationDTO>> getNotificationsForUser(
-            @RequestParam(value = "userId") final Long userId) {
-        System.out.println("Called notification. Getting notifications for user with id: " + userId);
-        List<NotificationDTO> notificationDTOS = new ArrayList<>();
-        this.notificationService.findByUserIdAndNotificationReadStatusType(userId, NotificationReadStatusType.UNREAD)
+            @RequestParam(value = "userId") final Long userId,
+            @RequestParam(value = "unread", required = false, defaultValue = "true") final boolean unread) {
+        final List<NotificationDTO> notificationDTOS = new ArrayList<>();
+        final NotificationReadStatusType notificationReadStatusType = unread ? NotificationReadStatusType.UNREAD : NotificationReadStatusType.READ;
+        this.notificationService.findByUserIdAndNotificationReadStatusType(userId, notificationReadStatusType)
                 .forEach(notification -> notificationDTOS.add(this.notificationMapper.toDto(notification)));
         return ResponseEntity.ok(notificationDTOS);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<HttpStatus> modifyNotificationReadStatusType(
-        @PathVariable("id") final Long id,
-        @RequestParam(value = "read", defaultValue = "true") Boolean read) {
+            @PathVariable("id") final Long id,
+            @RequestParam(value = "read", defaultValue = "true") final Boolean read) {
         this.notificationService.modifyNotificationReadStatus(id, read);
         return ResponseEntity.ok(HttpStatus.OK);
     }

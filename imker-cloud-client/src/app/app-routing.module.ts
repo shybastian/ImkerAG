@@ -5,6 +5,7 @@ import {AuthGuardService} from "./services/guards/auth-guard.service";
 import {DashboardComponent} from "./main/dashboard/dashboard.component";
 import {NotificationViewComponent} from "./main/notification-view/notification-view.component";
 import {BeehiveViewComponent} from "./main/beehive-view/beehive-view.component";
+import {BeehiveSetupComponent} from "./main/tool-view/beehive-setup/beehive-setup.component";
 
 const routes: Routes = [
   {
@@ -28,7 +29,12 @@ const routes: Routes = [
       {
         path: 'notifications',
         component: NotificationViewComponent,
-      }
+      },
+      {
+        path: 'tools/beehives',
+        component: BeehiveSetupComponent,
+        canActivate: [AuthGuardService],
+      },
     ]
   },
 ];

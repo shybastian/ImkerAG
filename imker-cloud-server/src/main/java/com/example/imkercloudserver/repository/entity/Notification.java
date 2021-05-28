@@ -1,9 +1,7 @@
 package com.example.imkercloudserver.repository.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 
@@ -29,6 +27,10 @@ public class Notification {
     @Column(name = "MESSAGE")
     private String message;
 
+    @Column(name = "NOTIFICATION_DATE")
+    private DateTime dateTime;
+
+    @ToString.Exclude
     @ManyToOne(
             targetEntity = User.class,
             fetch = FetchType.LAZY
@@ -36,6 +38,7 @@ public class Notification {
     @JoinColumn(name = "FK_USER")
     private User user;
 
+    @ToString.Exclude
     @ManyToOne(
             targetEntity = Beehive.class,
             fetch = FetchType.LAZY

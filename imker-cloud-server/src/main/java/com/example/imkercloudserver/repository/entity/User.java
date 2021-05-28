@@ -1,12 +1,10 @@
 package com.example.imkercloudserver.repository.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,20 +32,22 @@ public class User {
     @Column(name = "EMAIL")
     private String email;
 
+    @ToString.Exclude
+    @OrderBy(value = "dateTime")
     @OneToMany(
             mappedBy = "user",
-            fetch = FetchType.LAZY
+            fetch = FetchType.LAZY,
+            orphanRemoval = true
     )
     private List<Notification> notifications;
 
-    @ManyToMany(
-            targetEntity = Beehive.class,
-            fetch = FetchType.LAZY
-    )
+    @ToString.Exclude
+    @OrderBy(value = "id")
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "USERS_BEEHIVES",
             joinColumns = @JoinColumn(name = "FK_USER"),
             inverseJoinColumns = @JoinColumn(name = "FK_BEEHIVE")
     )
-    private List<Beehive> beehives;
+    private Set<Beehive> beehives;
 }
