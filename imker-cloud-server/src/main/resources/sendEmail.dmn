@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" id="Definitions_0bnelti" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.8.1">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" id="Definitions_0bnelti" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.8.1">
   <decision id="sendEmail" name="Send Email">
     <decisionTable id="DecisionTable_011418e">
       <input id="Input_1" label="PopulationNr" camunda:inputVariable="populationNr">
-        <inputExpression id="InputExpression_1" typeRef="integer">
+        <inputExpression id="InputExpression_1" typeRef="long">
           <text></text>
         </inputExpression>
       </input>
@@ -12,15 +12,18 @@
           <text></text>
         </inputExpression>
       </input>
-      <input id="InputClause_1odhkfr" label="Activity" camunda:inputVariable="activity">
-        <inputExpression id="LiteralExpression_0gqs8t0" typeRef="string">
+      <input id="InputClause_1odhkfr" label="Activity" biodi:width="298" camunda:inputVariable="activity">
+        <inputExpression id="LiteralExpression_0gqs8t0" typeRef="string" expressionLanguage="feel">
           <text></text>
         </inputExpression>
+        <inputValues id="UnaryTests_0kxd6mu">
+          <text>"NORMAL","HYPERACTIVE","SLOW"</text>
+        </inputValues>
       </input>
       <output id="Output_1" label="Send Email" name="sendEmail" typeRef="boolean" />
       <rule id="DecisionRule_125n1vd">
         <inputEntry id="UnaryTests_19ga12x">
-          <text>&gt;= 100</text>
+          <text>[50..150]</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0czedgt">
           <text>35</text>
@@ -34,7 +37,7 @@
       </rule>
       <rule id="DecisionRule_139qk8s">
         <inputEntry id="UnaryTests_1h2jnz5">
-          <text>&gt;= 100</text>
+          <text>&gt;= 150</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1rteclc">
           <text>35</text>
@@ -48,7 +51,7 @@
       </rule>
       <rule id="DecisionRule_0q0huo8">
         <inputEntry id="UnaryTests_1rfb5ut">
-          <text>&gt;= 100</text>
+          <text>&gt;= 150</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1bd91ai">
           <text>35</text>
@@ -62,7 +65,7 @@
       </rule>
       <rule id="DecisionRule_1lilbpy">
         <inputEntry id="UnaryTests_1mtafc5">
-          <text>&gt;= 100</text>
+          <text>[50..150]</text>
         </inputEntry>
         <inputEntry id="UnaryTests_1obfdnb">
           <text>[35..40]</text>
@@ -113,7 +116,7 @@
           <text>HYPERACTIVE</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0wawf98">
-          <text>false</text>
+          <text>true</text>
         </outputEntry>
       </rule>
     </decisionTable>

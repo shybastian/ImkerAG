@@ -12,4 +12,7 @@ import java.util.Set;
 public interface MailService {
     void sendMailToMultipleUsers(EMailSubjectType type, Optional<Number> sufix, Set<User> users) throws BusinessException;
 
+    void sendMailToUser(String userEmail, Long beehiveId, EMailSubjectType type) throws BusinessException;
+
+    //void sendMailToUser(final Mail mail, final String email) throws BusinessException;
 }

@@ -3,6 +3,7 @@ package com.example.imkercloudserver.controller;
 
 import com.example.imkercloudserver.controller.dto.NotificationDTO;
 import com.example.imkercloudserver.mapper.NotificationMapper;
+import com.example.imkercloudserver.repository.entity.Notification;
 import com.example.imkercloudserver.repository.entity.NotificationReadStatusType;
 import com.example.imkercloudserver.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +22,17 @@ public class NotificationController {
     private final NotificationService notificationService;
 
     @GetMapping
-    public ResponseEntity<List<NotificationDTO>> getNotificationsForUser(
+    public ResponseEntity<?> getNotificationsForUser(
             @RequestParam(value = "userId") final Long userId,
             @RequestParam(value = "unread", required = false, defaultValue = "true") final boolean unread) {
-        final List<NotificationDTO> notificationDTOS = new ArrayList<>();
         final NotificationReadStatusType notificationReadStatusType = unread ? NotificationReadStatusType.UNREAD : NotificationReadStatusType.READ;
-        this.notificationService.findByUserIdAndNotificationReadStatusType(userId, notificationReadStatusType)
-                .forEach(notification -> notificationDTOS.add(this.notificationMapper.toDto(notification)));
-        return ResponseEntity.ok(notificationDTOS);
+        final List<Notification> notifications = this.notificationService.findByUserIdAndNotificationReadStatusType(userId, notificationReadStatusType);
+        if (notifications != null && !notifications.isEmpty()) {
+            final List<NotificationDTO> dto = new ArrayList<>();
+            notifications.forEach(notification -> dto.add(this.notificationMapper.toDto(notification)));
+            return ResponseEntity.ok(dto);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/{id}")

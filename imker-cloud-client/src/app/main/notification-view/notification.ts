@@ -2,7 +2,7 @@ export interface Notification {
   id: number;
   notificationType: NotificationType;
   message: string
-  timestamp: Date
+  dateTime: Date
 }
 
 export interface Notifications {

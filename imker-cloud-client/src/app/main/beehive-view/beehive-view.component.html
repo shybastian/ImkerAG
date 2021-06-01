@@ -2,6 +2,11 @@
 <div *ngIf="noBeehives" class="alert-danger">
   <p class="alert-danger">There are no Beehives available!</p>
 </div>
+<div *ngIf="!noBeehives" class="container">
+  <button type="button" (click)="switchBeehives()" class="btn btn-primary btn-outline-light btn-block">
+    {{switchButtonText}}
+  </button>
+</div>
 <table *ngIf="!noBeehives" class="table">
   <thead>
   <tr>
@@ -39,11 +44,12 @@
     </td>
 
     <td>
-<!--      <div *ngIf="isNormalTemperature(beehive.temperature) && isNormal(beehive.activityType)">-->
-<!--        <img src="assets/bee-happy.png" alt="Happy Bee"/>-->
-<!--      </div>-->
+      <!--      <div *ngIf="isNormalTemperature(beehive.temperature) && isNormal(beehive.activityType)">-->
+      <!--        <img src="assets/bee-happy.png" alt="Happy Bee"/>-->
+      <!--      </div>-->
 
-      <div *ngIf="isNormalTemperature(beehive.temperature) && isNormal(beehive.activityType); then thenBlock else elseBlock">
+      <div
+        *ngIf="isNormalTemperature(beehive.temperature) && isNormal(beehive.activityType); then thenBlock else elseBlock">
       </div>
       <ng-template #thenBlock>
         <img src="assets/bee-happy.png" alt="Happy Bee"/>

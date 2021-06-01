@@ -2,8 +2,6 @@ package com.example.imkercloudserver.service;
 
 import com.example.imkercloudserver.exception.BusinessException;
 import com.example.imkercloudserver.repository.entity.Beehive;
-import com.example.imkercloudserver.repository.entity.User;
-import com.example.imkercloudserver.service.impl.types.EMailSubjectType;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -11,6 +9,8 @@ import java.util.Set;
 
 @Service
 public interface BeehiveService {
+    Set<Long> getIds();
+
     Set<Beehive> findAll();
 
     Set<Beehive> findAllBelongingToUserId(final Long userId) throws BusinessException;
@@ -25,11 +25,12 @@ public interface BeehiveService {
 
     Beehive save(final Beehive beehive);
 
+    Long saveEmptyBeehive();
+
     Beehive update(final Beehive beehive);
 
     void deleteById(final Long id);
 
 //    void checkWeight() throws BusinessException;
 
-    void sendMailToMultipleUsers(EMailSubjectType type, Optional<Number> sufix, Set<User> users) throws BusinessException;
 }

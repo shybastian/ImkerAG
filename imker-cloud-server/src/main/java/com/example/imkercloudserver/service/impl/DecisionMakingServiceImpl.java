@@ -16,25 +16,31 @@ import java.io.InputStream;
 @Service
 public class DecisionMakingServiceImpl implements DecisionMakingService {
     private final DmnEngine dmnEngine;
-    private static final String SEND_EMAIL_DMN = "sendEmail.dmn";
+    private static final String SEND_EMAIL_DMN = "/sendEmail.dmn";
 
     public DecisionMakingServiceImpl() {
         this.dmnEngine = DmnEngineConfiguration.createDefaultDmnEngineConfiguration().buildEngine();
     }
 
-    public boolean shouldEmailBeSent(Beehive beehive) {
-        InputStream inputStream = DecisionMakingServiceImpl.class.getResourceAsStream(SEND_EMAIL_DMN);
+    @Override
+    public boolean shouldEmailBeSent(final Beehive beehive) {
+        final InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(SEND_EMAIL_DMN);
         if (inputStream != null) {
             try {
-                DmnDecision decision = dmnEngine.parseDecision("sendEmail", inputStream);
-                DmnDecisionTableResult result = dmnEngine.evaluateDecisionTable(decision, createVariableMap(beehive));
-                boolean shouldSendEmail = result.getSingleResult().getSingleEntry();
-                System.out.println("Decision: " + shouldSendEmail);
-                return shouldSendEmail;
+                final DmnDecision decision = this.dmnEngine.parseDecision("sendEmail", inputStream);
+                final DmnDecisionTableResult result = this.dmnEngine.evaluateDecisionTable(decision, this.createVariableMap(beehive));
+                System.out.println("DMN has result: " + result);
+                if (result != null) {
+                    if (result.getSingleResult() != null) {
+                        final Boolean shouldSendEmail = result.getSingleResult().getSingleEntry();
+                        System.out.println("Decision: " + shouldSendEmail);
+                        return shouldSendEmail;
+                    }
+                }
             } finally {
                 try {
                     inputStream.close();
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     System.err.println("Could not close stream! " + e.getMessage());
                 }
             }
@@ -42,10 +48,10 @@ public class DecisionMakingServiceImpl implements DecisionMakingService {
         return false;
     }
 
-    private VariableMap createVariableMap(Beehive beehive) {
+    private VariableMap createVariableMap(final Beehive beehive) {
         return Variables
                 .putValue("populationNr", beehive.getPopulationNr())
                 .putValue("temperature", beehive.getTemperature())
-                .putValue("activity", beehive.getActivityType());
+                .putValue("activity", beehive.getActivityType().toString());
     }
 }

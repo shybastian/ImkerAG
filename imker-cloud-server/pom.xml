@@ -19,7 +19,8 @@
         <org.projectlombok.version>1.18.10</org.projectlombok.version>
         <org.springboot.addons.version>2.4.5</org.springboot.addons.version>
         <liquibase.propertyFile>${project.basedir}/db/liquibase.properties</liquibase.propertyFile>
-        <liquibase.database.url>jdbc:sqlserver://localhost:1433;databaseName=MediCare;integratedSecurity=true</liquibase.database.url>
+        <liquibase.database.url>jdbc:sqlserver://localhost:1433;databaseName=MediCare;integratedSecurity=true
+        </liquibase.database.url>
         <camunda.dmn.version>7.15.0</camunda.dmn.version>
     </properties>
 

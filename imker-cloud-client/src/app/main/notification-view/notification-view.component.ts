@@ -27,6 +27,7 @@ export class NotificationViewComponent implements OnInit, AfterViewInit {
       if (data.length === 0) {
         this.noNotifications = true;
       } else {
+        console.log(data);
         this.notifications = data;
         this.notifications.sort((a, b) => {
           return a.id - b.id;

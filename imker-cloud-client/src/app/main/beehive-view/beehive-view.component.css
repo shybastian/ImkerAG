@@ -10,9 +10,31 @@ h2 {
   color: indianred;
 }
 
+.container {
+  margin: 0;
+  position: absolute;
+  top: 5%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 
 div {
   white-space: pre;
 }
 
+button {
+  position: relative;
+}
 
+.btn {
+  background-color: indianred;
+}
+
+.btn:hover {
+  background-color: coral;
+}
+
+a:hover {
+  background-color: orangered;
+}

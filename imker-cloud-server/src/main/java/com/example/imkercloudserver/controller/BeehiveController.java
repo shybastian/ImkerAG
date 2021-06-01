@@ -6,7 +6,7 @@ import com.example.imkercloudserver.mapper.BeehiveMapper;
 import com.example.imkercloudserver.repository.entity.ActivityType;
 import com.example.imkercloudserver.repository.entity.Beehive;
 import com.example.imkercloudserver.service.BeehiveService;
-import com.example.imkercloudserver.service.impl.types.EMailSubjectType;
+import com.example.imkercloudserver.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +22,7 @@ import java.util.Set;
 public class BeehiveController {
     private final BeehiveMapper beehiveMapper;
     private final BeehiveService beehiveService;
+    private final MailService mailService;
 
 
     @GetMapping
@@ -36,6 +37,30 @@ public class BeehiveController {
                     .forEach(beehive -> beehiveDTOS.add(this.beehiveMapper.toDto(beehive)));
         }
         return ResponseEntity.ok(beehiveDTOS);
+    }
+
+    @GetMapping("/test")
+    public String test() {
+        final String one = "Test";
+        final String two = "Sebi";
+        final String result = one + two + 2 + 2;
+        final String resultTwo = 2 + 2 + one + two + 2 + 2;
+        return resultTwo;
+    }
+
+    @GetMapping("/total")
+    public int getNumberOfBeehives() {
+        return this.beehiveService.findAll().size();
+    }
+
+    @GetMapping("/asString")
+    public String getAllBeehivesIdAsString() {
+        final Set<Long> longSet = this.beehiveService.getIds();
+        final StringBuilder builder = new StringBuilder();
+        for (final Long id : longSet) {
+            builder.append(id).append(",");
+        }
+        return builder.deleteCharAt(builder.length() - 1).toString();
     }
 
     @GetMapping("/{id}")
@@ -56,6 +81,11 @@ public class BeehiveController {
         final Beehive beehive = this.beehiveMapper.toEntity(beehiveDTO);
         final BeehiveDTO addedBeehiveDTO = this.beehiveMapper.toDto(this.beehiveService.save(beehive));
         return ResponseEntity.ok(addedBeehiveDTO);
+    }
+
+    @PostMapping("/empty")
+    public Long saveBeehive() {
+        return this.beehiveService.saveEmptyBeehive();
     }
 
     @PutMapping
@@ -117,6 +147,18 @@ public class BeehiveController {
         }
     }
 
+    @PostMapping("/{id}/modify")
+    public void modifyBeehiveAttributes(
+            @PathVariable("id") final Long id,
+            @RequestParam(value = "weight", required = false) final Integer weight,
+            @RequestParam(value = "temperature", required = false) final Integer temperature,
+            @RequestParam(value = "nrPopulation", required = false) final Integer nrPopulation,
+            @RequestParam(value = "activity", required = false) final ActivityType activityType
+    ) {
+        final Beehive toUpdate = new Beehive(id, weight, temperature, Long.valueOf(nrPopulation), activityType, null);
+        this.beehiveService.update(toUpdate);
+    }
+
     @PostMapping("/{id}/population")
     public ResponseEntity<Long> modifyBeehivePopulationById(
             @PathVariable("id") final Long id,
@@ -141,20 +183,20 @@ public class BeehiveController {
         return ResponseEntity.ok(this.beehiveService.modifyWeight(id, toHigh));
     }
 
-    @PostMapping("/{id}/email")
-    public ResponseEntity<Integer> sendEmail(
-            @PathVariable("id") final Long id) throws BusinessException {
-        System.out.println("Called Email Manipulation API");
-        final Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
-        if (optionalBeehive.isPresent()) {
-            final Beehive b = optionalBeehive.get();
-            this.beehiveService.sendMailToMultipleUsers(EMailSubjectType.WEIGHT_TOO_HIGH, Optional.of(b.getWeight()), b.getUsers());
-        } else {
-            throw new BusinessException("Beehive id " + id + "was not found");
-
-        }
-
-        return ResponseEntity.noContent().build();
-    }
+//    @PostMapping("/{id}/email")
+//    public ResponseEntity<Integer> sendEmail(
+//            @PathVariable("id") final Long id) throws BusinessException {
+//        System.out.println("Called Email Manipulation API");
+//        final Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
+//        if (optionalBeehive.isPresent()) {
+//            final Beehive b = optionalBeehive.get();
+//            this.mailService.sendMailToMultipleUsers(EMailSubjectType.WEIGHT_TOO_HIGH, Optional.of(b.getWeight()), b.getUsers());
+//        } else {
+//            throw new BusinessException("Beehive id " + id + "was not found");
+//
+//        }
+//
+//        return ResponseEntity.noContent().build();
+//    }
 
 }

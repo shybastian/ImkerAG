@@ -11,9 +11,6 @@
   <tbody class="">
   <tr *ngFor="let notification of notifications">
     <td>
-      <img src="assets/beehive.ico" alt="Beehive icon"/>
-    </td>
-    <td>
       <div *ngIf="isCritical(notification.notificationType)" class="table-danger">
         {{notification.notificationType}}
       </div>
@@ -27,7 +24,7 @@
 
     <td>{{notification.message}}</td>
 
-    <td>{{notification.timestamp | date}}</td>
+    <td>{{notification.dateTime | date}}</td>
   </tr>
   </tbody>
 </table>

@@ -1,9 +1,9 @@
 package com.example.imkercloudserver.repository.entity;
 
 import lombok.*;
-import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,8 +27,8 @@ public class Notification {
     @Column(name = "MESSAGE")
     private String message;
 
-    @Column(name = "NOTIFICATION_DATE")
-    private DateTime dateTime;
+    @Column(name = "NOTIFICATION_DATE", updatable = false)
+    private Date dateTime;
 
     @ToString.Exclude
     @ManyToOne(

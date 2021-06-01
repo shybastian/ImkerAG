@@ -14,7 +14,7 @@ public interface NotificationService {
 
     void modifyNotificationReadStatus(final Long id, final Boolean read);
 
-    Notification save(final Notification user);
+    Notification save(final Notification notification);
 
     void deleteById(final Long id);
 }

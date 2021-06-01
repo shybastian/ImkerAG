@@ -16,12 +16,18 @@ export class BeehiveViewComponent implements OnInit, AfterViewInit {
   private beehiveCoolingIcon: string;
   private beehiveHeatingIcon: string;
 
+  private areBeehivesForUser: boolean;
+  public switchButtonText: string;
+
   constructor(private _beehiveApi: BeehiveApiService) {
     this.beehives = [];
     this.noBeehives = false;
 
     this.beehiveCoolingIcon = "assets/beehive-cooling.gif";
     this.beehiveHeatingIcon = "assets/beehive-heating.gif";
+
+    this.areBeehivesForUser = true;
+    this.switchButtonText = "Click here to see all Beehives!";
   }
 
 
@@ -33,6 +39,7 @@ export class BeehiveViewComponent implements OnInit, AfterViewInit {
    * Get all Beehive data from the server.
    */
   ngAfterViewInit(): void {
+    this.areBeehivesForUser = true;
     this._beehiveApi.getBeehivesBelongingToUser().subscribe((data: Beehive[]) => {
       if (data.length === 0) {
         this.noBeehives = true;
@@ -43,6 +50,42 @@ export class BeehiveViewComponent implements OnInit, AfterViewInit {
         })
       }
     })
+  }
+
+  switchButton() {
+    if (this.areBeehivesForUser) {
+      this.switchButtonText = "Click here to see your Beehives!";
+    } else {
+      this.switchButtonText = "Click here to see all Beehives!";
+    }
+    this.areBeehivesForUser = !this.areBeehivesForUser;
+  }
+
+  switchBeehives(): void {
+    if (this.areBeehivesForUser) {
+      this._beehiveApi.getAllBeehives().subscribe((data: Beehive[]) => {
+        if (data.length === 0) {
+          this.noBeehives = true;
+        } else {
+          this.beehives = data;
+          this.beehives.sort((a, b) => {
+            return a.id - b.id;
+          })
+        }
+      })
+    } else {
+      this._beehiveApi.getBeehivesBelongingToUser().subscribe((data: Beehive[]) => {
+        if (data.length === 0) {
+          this.noBeehives = true;
+        } else {
+          this.beehives = data;
+          this.beehives.sort((a, b) => {
+            return a.id - b.id;
+          })
+        }
+      })
+    }
+    this.switchButton();
   }
 
   isCold(temperature: number) {

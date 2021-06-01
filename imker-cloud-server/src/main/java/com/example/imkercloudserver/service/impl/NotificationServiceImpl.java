@@ -20,14 +20,14 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> findByUserIdAndNotificationReadStatusType(Long userId, final NotificationReadStatusType type) {
+    public List<Notification> findByUserIdAndNotificationReadStatusType(final Long userId, final NotificationReadStatusType type) {
         return this.notificationRepository.findNotificationsByNotificationReadStatusType(userId, type);
     }
 
     @Override
-    public void modifyNotificationReadStatus(final Long id, Boolean read) {
-        Notification entity = notificationRepository.getOne(id);
-        if (read){
+    public void modifyNotificationReadStatus(final Long id, final Boolean read) {
+        final Notification entity = this.notificationRepository.getOne(id);
+        if (read) {
             entity.setNotificationReadStatusType(NotificationReadStatusType.READ);
         } else {
             entity.setNotificationReadStatusType(NotificationReadStatusType.UNREAD);
@@ -36,12 +36,12 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Notification save(Notification user) {
-        return null;
+    public Notification save(final Notification notification) {
+        return this.notificationRepository.save(notification);
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(final Long id) {
 
     }
 }
