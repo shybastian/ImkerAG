@@ -8,32 +8,11 @@
 
     <changeSet id="1622141724137-1" author="Sebastian">
         <insert tableName="USERS">
-            <column name="USERNAME" value="flavia"/>
-            <column name="PASSWORD" value="33970121fb6e114f77064788ee4073759c40826acbbdbccb027c9ba7293318b1"/>
-            <column name="FIRST_NAME" value="Flavia"/>
-            <column name="LAST_NAME" value="Rebrean"/>
-            <column name="EMAIL" value="flavia@flavia.ro"/>
-        </insert>
-        <insert tableName="USERS">
             <column name="USERNAME" value="sebastian"/>
             <column name="PASSWORD" value="4dd68e2ab3a30973318ea903e088b3d3480655ef4236109fe47272c1c1582880"/>
             <column name="FIRST_NAME" value="Sebastian"/>
             <column name="LAST_NAME" value="Maier"/>
             <column name="EMAIL" value="sebastian.maier98@yahoo.ro"/>
-        </insert>
-        <insert tableName="USERS">
-            <column name="USERNAME" value="denis"/>
-            <column name="PASSWORD" value="79aef731091472c4395b63b32b2c00c919b9d9538dc1c990381cc8c4609fe9f8"/>
-            <column name="FIRST_NAME" value="Denis"/>
-            <column name="LAST_NAME" value="Eneotescu"/>
-            <column name="EMAIL" value="denis@denis.ro"/>
-        </insert>
-        <insert tableName="USERS">
-            <column name="USERNAME" value="test"/>
-            <column name="PASSWORD" value="9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"/>
-            <column name="FIRST_NAME" value="Test"/>
-            <column name="LAST_NAME" value="Testovich"/>
-            <column name="EMAIL" value="test@test.test"/>
         </insert>
         <insert tableName="USERS">
             <column name="USERNAME" value="bpmn"/>

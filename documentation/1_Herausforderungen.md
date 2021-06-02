@@ -3,10 +3,15 @@ title: "Herausforderungen"
 type: description
 ---
 
-Wir leben in einer Welt, in der die Informatik das Ökosystem verschiedener Bereiche bereichert hat, sei es Marketing, menschliche Beziehungen und sogar Landwirtschaft und Imkerei. 
-Es wurde eine Frage gestellt: Wie können wir den Umgang mit einem Bienenstock verbessern?
+# 1. Herausforderungen
 
-Die Antwort darauf war offensichtlich Informatik. Die Anwendung "Sweeter Honey - HiveMind" zielt darauf ab, Smart-Bienenstöcke mit einer Anwendung zu verknüpfen, die Sensoren verwalten, Daten sammeln und Entscheidungen auf der Grundlage verschiedener Faktoren treffen kann. 
-Wir können die Zeit vergessen, in der Imker nacheinander Hunderte von Bienenstöcken überprüfen mussten. Mit dieser Anwendung sind alle Informationen nur einen Klick entfernt.
+We live in a world where computing has enriched the ecosystem of various fields, be it marketing, human relations and
+even agriculture and beekeeping. A question has been asked: How can we improve the way we deal with a beehive better?
 
-... U-N-D-E-R  C-O-N-S-T-R-U-C-T-I-O-N ...
+The answer to this was obviously computer science. The application __"Sweeter Honey - HiveMind"__ aims to tie together
+smart hives with an application that can manage sensors, collect data, and make decisions based on various factors. We
+can forget about the time when beekeepers had to check hundreds of hives one after the other. With this application, all
+the information is just **one** click away.
+
+The aim of this project is the simulation of different irregular Beehive states and bringing them back to a normal
+state. 
