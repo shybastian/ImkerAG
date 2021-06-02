@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../../services/auth/auth.service";
 import {BusinessApiService} from "../../services/businessApi/business-api.service";
+import {faCode, faHeart} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-navigate-menu',
@@ -10,6 +11,8 @@ import {BusinessApiService} from "../../services/businessApi/business-api.servic
 })
 export class NavigateMenuComponent implements OnInit {
   isToolsButtonActive: boolean;
+  faHeart = faHeart;
+  faCode = faCode;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,

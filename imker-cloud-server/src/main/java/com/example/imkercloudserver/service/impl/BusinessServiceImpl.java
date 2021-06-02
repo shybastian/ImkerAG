@@ -114,7 +114,7 @@ public class BusinessServiceImpl implements BusinessService {
                 final Notification notification = new Notification();
                 notification.setNotificationType(NotificationType.INFO);
                 notification.setNotificationReadStatusType(NotificationReadStatusType.UNREAD);
-                notification.setMessage(EMailSubjectType.WEIGHT_TOO_HIGH.message);
+                notification.setMessage(EMailSubjectType.WEIGHT_TOO_HIGH.message + beehive.getId());
                 notification.setDateTime(new Date(new DateTime().getMillis()));
                 notification.setBeehive(beehive);
                 notification.setUser(user);
@@ -125,7 +125,7 @@ public class BusinessServiceImpl implements BusinessService {
                 final Notification notification = new Notification();
                 notification.setNotificationType(NotificationType.INFO);
                 notification.setNotificationReadStatusType(NotificationReadStatusType.UNREAD);
-                notification.setMessage(EMailSubjectType.TEMPERATURE_TOO_HIGH.message);
+                notification.setMessage(EMailSubjectType.TEMPERATURE_TOO_HIGH.message + beehive.getId());
                 notification.setDateTime(new Date(new DateTime().getMillis()));
                 notification.setBeehive(beehive);
                 notification.setUser(user);
@@ -136,7 +136,7 @@ public class BusinessServiceImpl implements BusinessService {
                 final Notification notification = new Notification();
                 notification.setNotificationType(NotificationType.INFO);
                 notification.setNotificationReadStatusType(NotificationReadStatusType.UNREAD);
-                notification.setMessage(EMailSubjectType.TEMPERATURE_TOO_LOW.message);
+                notification.setMessage(EMailSubjectType.TEMPERATURE_TOO_LOW.message + beehive.getId());
                 notification.setDateTime(new Date(new DateTime().getMillis()));
                 notification.setBeehive(beehive);
                 notification.setUser(user);
@@ -147,7 +147,7 @@ public class BusinessServiceImpl implements BusinessService {
                 final Notification notification = new Notification();
                 notification.setNotificationType(NotificationType.INFO);
                 notification.setNotificationReadStatusType(NotificationReadStatusType.UNREAD);
-                notification.setMessage(EMailSubjectType.HYPERACTIVE.message);
+                notification.setMessage(EMailSubjectType.HYPERACTIVE.message + beehive.getId());
                 notification.setDateTime(new Date(new DateTime().getMillis()));
                 notification.setBeehive(beehive);
                 notification.setUser(user);
@@ -158,7 +158,7 @@ public class BusinessServiceImpl implements BusinessService {
                 final Notification notification = new Notification();
                 notification.setNotificationType(NotificationType.INFO);
                 notification.setNotificationReadStatusType(NotificationReadStatusType.UNREAD);
-                notification.setMessage(EMailSubjectType.HYPERACTIVE.message);
+                notification.setMessage(EMailSubjectType.HYPERACTIVE.message + beehive.getId());
                 notification.setDateTime(new Date(new DateTime().getMillis()));
                 notification.setBeehive(beehive);
                 notification.setUser(user);
