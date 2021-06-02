@@ -6,6 +6,7 @@ import {DashboardComponent} from "./main/dashboard/dashboard.component";
 import {NotificationViewComponent} from "./main/notification-view/notification-view.component";
 import {BeehiveViewComponent} from "./main/beehive-view/beehive-view.component";
 import {BeehiveSetupComponent} from "./main/tool-view/beehive-setup/beehive-setup.component";
+import {RegisterComponent} from "./main/register/register.component";
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: 'dashboard',

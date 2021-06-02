@@ -16,6 +16,7 @@ import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {ExtendedModule, FlexModule} from "@angular/flex-layout";
 import { BeehiveSetupComponent } from './main/tool-view/beehive-setup/beehive-setup.component';
+import { RegisterComponent } from './main/register/register.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { BeehiveSetupComponent } from './main/tool-view/beehive-setup/beehive-se
     NotificationViewComponent,
     BeehiveViewComponent,
     BeehiveSetupComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

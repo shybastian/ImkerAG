@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {UserApiService} from "../../services/userApi/user-api.service";
 import {AuthService} from "../../services/auth/auth.service";
 import {Router} from "@angular/router";
-import {UserApiService} from "../../services/userApi/user-api.service";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class RegisterComponent implements OnInit {
   form!: FormGroup;
   loginError: boolean;
   loginErrorMessage: string;
@@ -25,13 +25,16 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', Validators.required],
     });
   }
 
-  login() {
-    let b = this.form.value
-    this._userApi.loginUser(b).subscribe((res: any) => {
+  register() {
+    let user = this.form.value
+    this._userApi.registerUser(user).subscribe((res: any) => {
         if (res !== undefined && res !== null) {
           this.loginError = false;
           this.loginErrorMessage = "";
@@ -41,24 +44,17 @@ export class LoginComponent implements OnInit {
           this._auth.setDataInLocalStorage('firstName', res.firstName)
           this._auth.setDataInLocalStorage('lastName', res.lastName)
           this._auth.setDataInLocalStorage('email', res.email)
+
+          this.router.navigate(['dashboard/beehives']);
         }
       },
       error => {
         this.loginError = true;
-        console.log(error);
-        if (error.status === 404) {
-          this.loginErrorMessage = "Username/Password combination not found!"
-        } else {
-          this.loginErrorMessage = error.message;
-        }
-      },
-      () => {
-        this.router.navigate(['dashboard/beehives']);
+        this.loginErrorMessage = error.message;
       });
   }
 
-  moveToRegisterView() {
-    this.router.navigate(["./register"]);
+  moveToLoginView() {
+    this.router.navigate(["./login"]);
   }
-
 }

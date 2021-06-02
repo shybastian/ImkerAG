@@ -16,7 +16,7 @@ import java.io.InputStream;
 @Service
 public class DecisionMakingServiceImpl implements DecisionMakingService {
     private final DmnEngine dmnEngine;
-    private static final String SEND_EMAIL_DMN = "/sendEmail.dmn";
+    private static final String SEND_EMAIL_DMN = "sendEmail.dmn";
 
     public DecisionMakingServiceImpl() {
         this.dmnEngine = DmnEngineConfiguration.createDefaultDmnEngineConfiguration().buildEngine();
@@ -24,7 +24,8 @@ public class DecisionMakingServiceImpl implements DecisionMakingService {
 
     @Override
     public boolean shouldEmailBeSent(final Beehive beehive) {
-        final InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(SEND_EMAIL_DMN);
+        final ClassLoader loader = this.getClass().getClassLoader();
+        final InputStream inputStream = loader.getResourceAsStream("sendEmail.dmn");
         if (inputStream != null) {
             try {
                 final DmnDecision decision = this.dmnEngine.parseDecision("sendEmail", inputStream);

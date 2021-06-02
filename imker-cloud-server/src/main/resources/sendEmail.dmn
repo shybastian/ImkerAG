@@ -13,11 +13,11 @@
         </inputExpression>
       </input>
       <input id="InputClause_1odhkfr" label="Activity" biodi:width="298" camunda:inputVariable="activity">
-        <inputExpression id="LiteralExpression_0gqs8t0" typeRef="string" expressionLanguage="feel">
-          <text></text>
+        <inputExpression id="LiteralExpression_0gqs8t0" typeRef="string">
+          <text>activity</text>
         </inputExpression>
         <inputValues id="UnaryTests_0kxd6mu">
-          <text>"NORMAL","HYPERACTIVE","SLOW"</text>
+          <text></text>
         </inputValues>
       </input>
       <output id="Output_1" label="Send Email" name="sendEmail" typeRef="boolean" />
@@ -29,7 +29,7 @@
           <text>35</text>
         </inputEntry>
         <inputEntry id="UnaryTests_04ihn5e">
-          <text>NORMAL</text>
+          <text>"NORMAL"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0vubwkq">
           <text>false</text>
@@ -43,7 +43,7 @@
           <text>35</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0xs0l05">
-          <text>SLOW</text>
+          <text>"SLOW"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_07qulw9">
           <text>false</text>
@@ -57,7 +57,7 @@
           <text>35</text>
         </inputEntry>
         <inputEntry id="UnaryTests_16dt7bv">
-          <text>HYPERACTIVE</text>
+          <text>"HYPERACTIVE"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0qn1wtw">
           <text>true</text>
@@ -71,7 +71,7 @@
           <text>[35..40]</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0vq2zjn">
-          <text>NORMAL</text>
+          <text>"NORMAL"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1jxszvm">
           <text>false</text>
@@ -85,7 +85,7 @@
           <text>&gt; 40</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0h1aejy">
-          <text>NORMAL</text>
+          <text>"NORMAL"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0m0qycc">
           <text>true</text>
@@ -99,7 +99,7 @@
           <text>&gt; 40</text>
         </inputEntry>
         <inputEntry id="UnaryTests_133b8hz">
-          <text>SLOW</text>
+          <text>"SLOW"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0c9o4pc">
           <text>true</text>
@@ -113,7 +113,7 @@
           <text>&gt; 40</text>
         </inputEntry>
         <inputEntry id="UnaryTests_0zon3fv">
-          <text>HYPERACTIVE</text>
+          <text>"HYPERACTIVE"</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0wawf98">
           <text>true</text>

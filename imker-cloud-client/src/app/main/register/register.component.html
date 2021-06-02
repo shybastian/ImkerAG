@@ -1,10 +1,10 @@
 <body class="background">
 <div class="log-in">
-  <form [formGroup]='form' (ngSubmit)='login()' class="loginStyling">
+  <form [formGroup]='form' (ngSubmit)='register()' class="loginStyling">
     <div class="form-holder">
       <h2>Imker Cloud</h2>
       <span>
-        <label class="col-form-label-lg">Sign In</label>
+        <label class="col-form-label-lg">Register</label>
       </span>
       <div class="main">
         <label class="col-form-label">Username</label>
@@ -14,18 +14,27 @@
 
         <label class="col-form-label">Password</label>
         <input type='password' formControlName='password' class="input-group"/>
+
+        <label class="col-form-label">First Name</label>
+        <input type='text' formControlName='firstName' class="input-group"/>
+
+        <label class="col-form-label">Last Name</label>
+        <input type='text' formControlName='lastName' class="input-group"/>
+
+        <label class="col-form-label">E-Mail</label>
+        <input type='text' formControlName='email' class="input-group"/>
         <div>
           <p></p>
           <button type='submit' [disabled]='!this.form.valid' class="myButton">
-            Login
+            Register
           </button>
         </div>
       </div>
     </div>
   </form>
 
-  <button type='submit' class="myButton" (click)="moveToRegisterView()">
-    Register
+  <button type='submit' class="myButton" (click)="moveToLoginView()">
+    Back To Login
   </button>
 
   <div *ngIf="loginError" class="alert-danger">
