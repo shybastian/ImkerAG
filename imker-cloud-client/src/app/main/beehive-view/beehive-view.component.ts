@@ -1,6 +1,8 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BeehiveApiService} from "../../services/beehiveApi/beehive-api.service";
 import {Activity, Beehive} from "./beehive";
+import {faCheck} from "@fortawesome/free-solid-svg-icons/faCheck";
+import {faStop} from "@fortawesome/free-solid-svg-icons/faStop";
 
 @Component({
   selector: 'app-beehive-view',
@@ -8,6 +10,9 @@ import {Activity, Beehive} from "./beehive";
   styleUrls: ['./beehive-view.component.css']
 })
 export class BeehiveViewComponent implements OnInit, AfterViewInit {
+  faCheckmark = faCheck
+  faX = faStop
+
   headElements = ['', 'ID', 'Weight', 'Temperature', 'Population Number', 'Current Activity', 'Beehive Status', 'Ready For Harvest?'];
 
   public beehives: Beehive[];

@@ -68,7 +68,12 @@
     </td>
 
     <td>
-      <!-- Check weight-->
+      <div *ngIf="beehive.weight >= 10">
+        <fa-icon [icon]="faCheckmark"></fa-icon>
+      </div>
+      <div *ngIf="beehive.weight < 10">
+        <fa-icon [icon]="faX"></fa-icon>
+      </div>
     </td>
   </tr>
   </tbody>
