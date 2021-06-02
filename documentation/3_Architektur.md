@@ -64,7 +64,9 @@ information from the database.
 
 ## 3. Client
 
-
+The client was developed in Angular TypeScript which runs on a NodeJS instance. The Client's role is to offer a visual
+interface for the user. The user can register or can log in an existing account. Once logged in the user can look the
+status of the beehive they are responsible for, or all of them, and also check their notifications.
 
 
 

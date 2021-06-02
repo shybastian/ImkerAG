@@ -71,7 +71,7 @@ type: description
 1. Please open a command line in the 'imker-cloud-client' directory.
 2. Write the following `npm install`
 3. The command line will print the following:
-   ![NPM_INSTALL](documentation/images/npm_install.png)
+   ![NPM_INSTALL](./images/npm_install.png)
 
 4. To start the AngularNPM client, please write the following:
    `ng serve`

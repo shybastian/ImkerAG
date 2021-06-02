@@ -7,6 +7,7 @@ import com.example.imkercloudserver.repository.entity.ActivityType;
 import com.example.imkercloudserver.repository.entity.Beehive;
 import com.example.imkercloudserver.service.BeehiveService;
 import com.example.imkercloudserver.service.MailService;
+import com.example.imkercloudserver.service.impl.types.EMailSubjectType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -183,20 +184,20 @@ public class BeehiveController {
         return ResponseEntity.ok(this.beehiveService.modifyWeight(id, toHigh));
     }
 
-//    @PostMapping("/{id}/email")
-//    public ResponseEntity<Integer> sendEmail(
-//            @PathVariable("id") final Long id) throws BusinessException {
-//        System.out.println("Called Email Manipulation API");
-//        final Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
-//        if (optionalBeehive.isPresent()) {
-//            final Beehive b = optionalBeehive.get();
-//            this.mailService.sendMailToMultipleUsers(EMailSubjectType.WEIGHT_TOO_HIGH, Optional.of(b.getWeight()), b.getUsers());
-//        } else {
-//            throw new BusinessException("Beehive id " + id + "was not found");
-//
-//        }
-//
-//        return ResponseEntity.noContent().build();
-//    }
+    @PostMapping("/{id}/email")
+    public ResponseEntity<Integer> sendEmail(
+            @PathVariable("id") final Long id) throws BusinessException {
+        System.out.println("Called Email Manipulation API");
+        final Optional<Beehive> optionalBeehive = this.beehiveService.findById(id);
+        if (optionalBeehive.isPresent()) {
+            final Beehive b = optionalBeehive.get();
+            this.mailService.sendMailToMultipleUsers(EMailSubjectType.WEIGHT_TOO_HIGH, Optional.of(b.getWeight()), b.getUsers());
+        } else {
+            throw new BusinessException("Beehive id " + id + "was not found");
+
+        }
+
+        return ResponseEntity.noContent().build();
+    }
 
 }
