@@ -8,13 +8,6 @@
 
     <changeSet id="1622141724137-1" author="Sebastian">
         <insert tableName="USERS">
-            <column name="USERNAME" value="sebastian"/>
-            <column name="PASSWORD" value="4dd68e2ab3a30973318ea903e088b3d3480655ef4236109fe47272c1c1582880"/>
-            <column name="FIRST_NAME" value="Sebastian"/>
-            <column name="LAST_NAME" value="Maier"/>
-            <column name="EMAIL" value="sebastian.maier98@yahoo.ro"/>
-        </insert>
-        <insert tableName="USERS">
             <column name="USERNAME" value="bpmn"/>
             <column name="PASSWORD" value="bba0ae1ac69728b69aba144cb48819604eb5caaf29228d57a3f1851ce9eda79d"/>
             <column name="FIRST_NAME" value="BPMN Sem 2"/>

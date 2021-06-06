@@ -40,15 +40,6 @@ public class BeehiveController {
         return ResponseEntity.ok(beehiveDTOS);
     }
 
-    @GetMapping("/test")
-    public String test() {
-        final String one = "Test";
-        final String two = "Sebi";
-        final String result = one + two + 2 + 2;
-        final String resultTwo = 2 + 2 + one + two + 2 + 2;
-        return resultTwo;
-    }
-
     @GetMapping("/total")
     public int getNumberOfBeehives() {
         return this.beehiveService.findAll().size();
